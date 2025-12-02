@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (useEnvCredentials) {
       const envProjectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
       const envClientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
-      const envPrivateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
+      const envPrivateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
       if (!envProjectId || !envClientEmail || !envPrivateKey) {
         return res.status(400).json({ error: 'Credenciais de origem não encontradas no .env.local' });
