@@ -1,0 +1,50 @@
+~/workspace$ npx ts-node security-test.ts
+Need to install the following packages:
+ts-node@10.9.2
+Ok to proceed? (y) y
+
+/home/runner/.npm/_npx/1bf7c3c15bf47d04/node_modules/ts-node/src/index.ts:859
+    return new TSError(diagnosticText, diagnosticCodes, diagnostics);
+           ^
+TSError: ⨯ Unable to compile TypeScript:
+security-test.ts:2:2 - error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+
+2 #!/usr/bin/env ts-node
+   ~~~~~~~~~
+security-test.ts:2:12 - error TS2304: Cannot find name 'env'.
+
+2 #!/usr/bin/env ts-node
+             ~~~
+security-test.ts:2:16 - error TS2304: Cannot find name 'ts'.
+
+2 #!/usr/bin/env ts-node
+                 ~~
+security-test.ts:2:19 - error TS2552: Cannot find name 'node'. Did you mean 'Node'?
+
+2 #!/usr/bin/env ts-node
+                    ~~~~
+
+  node_modules/typescript/lib/lib.dom.d.ts:10329:13
+    10329 declare var Node: {
+                      ~~~~
+    'Node' is declared here.
+security-test.ts:2:1 - error TS18026: '#!' can only be used at the start of a file.
+
+2 #!/usr/bin/env ts-node
+  
+security-test.ts:2:16 - error TS1005: ';' expected.
+
+2 #!/usr/bin/env ts-node
+                 ~~
+
+    at createTSError (/home/runner/.npm/_npx/1bf7c3c15bf47d04/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/home/runner/.npm/_npx/1bf7c3c15bf47d04/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/home/runner/.npm/_npx/1bf7c3c15bf47d04/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/home/runner/.npm/_npx/1bf7c3c15bf47d04/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/home/runner/.npm/_npx/1bf7c3c15bf47d04/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1613:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/runner/.npm/_npx/1bf7c3c15bf47d04/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1275:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1096:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12) {
+  diagnosticCodes: [ 2362, 2304, 2304, 2552, 18026, 1005 ]

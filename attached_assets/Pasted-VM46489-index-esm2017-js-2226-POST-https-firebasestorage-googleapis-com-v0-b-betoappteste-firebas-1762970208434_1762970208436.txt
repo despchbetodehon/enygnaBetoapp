@@ -1,0 +1,90 @@
+VM46489 index.esm2017.js:2226  POST https://firebasestorage.googleapis.com/v0/b/betoappteste.firebasestorage.app/o?name=pdfs%2FRequerimento_OIY5G85_1762970165314.pdf 403 (Forbidden)
+send @ VM46489 index.esm2017.js:2226
+doTheRequest @ VM46489 index.esm2017.js:758
+eval @ VM46489 index.esm2017.js:461
+setTimeout
+callWithDelay @ VM46489 index.esm2017.js:459
+start @ VM46489 index.esm2017.js:522
+start_ @ VM46489 index.esm2017.js:826
+eval @ VM46489 index.esm2017.js:731
+NetworkRequest @ VM46489 index.esm2017.js:728
+makeRequest @ VM46489 index.esm2017.js:883
+_makeRequest @ VM46489 index.esm2017.js:3364
+makeRequestWithTokens @ VM46489 index.esm2017.js:3379
+await in makeRequestWithTokens
+uploadBytes$1 @ VM46489 index.esm2017.js:2953
+uploadBytes @ VM46489 index.esm2017.js:3452
+generatePDF @ VM53099 ListPost.tsx:1621
+await in generatePDF
+handleAddItem @ VM53099 ListPost.tsx:1715
+await in handleAddItem
+callCallback @ VM46365 react-dom.development.js:4164
+invokeGuardedCallbackDev @ VM46365 react-dom.development.js:4213
+invokeGuardedCallback @ VM46365 react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ VM46365 react-dom.development.js:4291
+executeDispatch @ VM46365 react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ VM46365 react-dom.development.js:9073
+processDispatchQueue @ VM46365 react-dom.development.js:9086
+dispatchEventsForPlugins @ VM46365 react-dom.development.js:9097
+eval @ VM46365 react-dom.development.js:9288
+batchedUpdates$1 @ VM46365 react-dom.development.js:26135
+batchedUpdates @ VM46365 react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ VM46365 react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM46365 react-dom.development.js:6465
+dispatchEvent @ VM46365 react-dom.development.js:6457
+dispatchDiscreteEvent @ VM46365 react-dom.development.js:6430Understand this error
+VM46342 injected.js:27 Erro ao gerar PDF: FirebaseError: Firebase Storage: User does not have permission to access 'pdfs/Requerimento_OIY5G85_1762970165314.pdf'. (storage/unauthorized)
+(anonymous) @ VM46342 injected.js:27
+console.error @ VM46436 client.js:2
+(anonymous) @ VM46342 injected.js:27
+window.console.error @ VM46354 next-dev.js:23
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+(anonymous) @ VM46342 injected.js:27
+generatePDF @ VM53099 ListPost.tsx:1625
+await in generatePDF
+handleAddItem @ VM53099 ListPost.tsx:1715
+await in handleAddItem
+callCallback @ VM46365 react-dom.development.js:4164
+invokeGuardedCallbackDev @ VM46365 react-dom.development.js:4213
+invokeGuardedCallback @ VM46365 react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ VM46365 react-dom.development.js:4291
+executeDispatch @ VM46365 react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ VM46365 react-dom.development.js:9073
+processDispatchQueue @ VM46365 react-dom.development.js:9086
+dispatchEventsForPlugins @ VM46365 react-dom.development.js:9097
+eval @ VM46365 react-dom.development.js:9288
+batchedUpdates$1 @ VM46365 react-dom.development.js:26135
+batchedUpdates @ VM46365 react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ VM46365 react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM46365 react-dom.development.js:6465
+dispatchEvent @ VM46365 react-dom.development.js:6457
+dispatchDiscreteEvent @ VM46365 react-dom.development.js:6430Understand this error
+(index):1  Failed to load resource: the server responded with a status of 400 ()

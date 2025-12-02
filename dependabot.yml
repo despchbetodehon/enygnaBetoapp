@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"  # ou "yarn" se usar yarn
+    directory: "/"  # Diretório onde está o seu package.json
+    schedule:
+      interval: "weekly"  # Opções: "daily", "weekly", "monthly"

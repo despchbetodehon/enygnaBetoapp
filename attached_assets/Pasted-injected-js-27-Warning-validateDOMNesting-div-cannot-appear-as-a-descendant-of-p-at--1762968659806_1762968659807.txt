@@ -1,0 +1,206 @@
+injected.js:27 Warning: validateDOMNesting(...): <div> cannot appear as a descendant of <p>.
+    at div
+    at p
+    at Typography (webpack-internal:///./node_modules/@material-ui/core/esm/Typography/Typography.js:166:28)
+    at WithStyles (webpack-internal:///./node_modules/@material-ui/core/node_modules/@material-ui/styles/esm/withStyles/withStyles.js:61:31)
+    at div
+    at CompactSection (webpack-internal:///./src/components/enterprises/betodespa/ocrreq/requerimento/ListPost.tsx:509:11)
+    at div
+    at Grid (webpack-internal:///./node_modules/@material-ui/core/esm/Grid/Grid.js:236:35)
+    at WithStyles (webpack-internal:///./node_modules/@material-ui/core/node_modules/@material-ui/styles/esm/withStyles/withStyles.js:61:31)
+    at div
+    at Grid (webpack-internal:///./node_modules/@material-ui/core/esm/Grid/Grid.js:236:35)
+    at WithStyles (webpack-internal:///./node_modules/@material-ui/core/node_modules/@material-ui/styles/esm/withStyles/withStyles.js:61:31)
+    at div
+    at Paper (webpack-internal:///./node_modules/@material-ui/core/esm/Paper/Paper.js:48:23)
+    at WithStyles (webpack-internal:///./node_modules/@material-ui/core/node_modules/@material-ui/styles/esm/withStyles/withStyles.js:61:31)
+    at div
+    at div
+    at ListPost (webpack-internal:///./src/components/enterprises/betodespa/ocrreq/requerimento/ListPost.tsx:755:11)
+    at div
+    at div
+    at Produtoset (webpack-internal:///./src/components/enterprises/betodespa/ocrreq/requerimento/Produtoset.tsx:20:80)
+    at PageProduto
+    at div
+    at AutenticacaoProvider (webpack-internal:///./src/data/contexts/AutenticacaoContext.tsx:27:88)
+    at ThemeProvider (webpack-internal:///./node_modules/@emotion/react/dist/emotion-element-489459f2.browser.development.esm.js:94:50)
+    at MantineProvider (webpack-internal:///./node_modules/@mantine/styles/esm/theme/MantineProvider.js:78:3)
+    at ot (webpack-internal:///./node_modules/styled-components/dist/styled-components.browser.esm.js:30:20467)
+    at ThemeProvider (webpack-internal:///./node_modules/@material-ui/core/node_modules/@material-ui/styles/esm/ThemeProvider/ThemeProvider.js:42:24)
+    at App (webpack-internal:///./src/pages/_app.tsx:95:11)
+    at PathnameContextProviderAdapter (webpack-internal:///./node_modules/next/dist/shared/lib/router/adapters.js:62:11)
+    at ErrorBoundary (webpack-internal:///./node_modules/next/dist/compiled/@next/react-dev-overlay/dist/client.js:303:63)
+    at ReactDevOverlay (webpack-internal:///./node_modules/next/dist/compiled/@next/react-dev-overlay/dist/client.js:852:919)
+    at Container (webpack-internal:///./node_modules/next/dist/client/index.js:62:1)
+    at AppContainer (webpack-internal:///./node_modules/next/dist/client/index.js:172:11)
+    at Root (webpack-internal:///./node_modules/next/dist/client/index.js:347:11)
+(anonymous) @ injected.js:27
+console.error @ client.js:2
+(anonymous) @ injected.js:27
+window.console.error @ next-dev.js:23
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+printWarning @ react-dom.development.js:86
+error @ react-dom.development.js:60
+validateDOMNesting @ react-dom.development.js:10849
+createInstance @ react-dom.development.js:10930
+completeWork @ react-dom.development.js:22182
+completeUnitOfWork @ react-dom.development.js:26591
+performUnitOfWork @ react-dom.development.js:26563
+workLoopSync @ react-dom.development.js:26461
+renderRootSync @ react-dom.development.js:26429
+performConcurrentWorkOnRoot @ react-dom.development.js:25733
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+injected.js:27 Warning: Failed prop type: Material-UI: `overlap="rectangle"` was deprecated. Use `overlap="rectangular"` instead.
+    at Badge (webpack-internal:///./node_modules/@material-ui/core/esm/Badge/Badge.js:276:35)
+    at WithStyles (webpack-internal:///./node_modules/@material-ui/core/node_modules/@material-ui/styles/esm/withStyles/withStyles.js:61:31)
+    at span
+    at button
+    at ButtonBase (webpack-internal:///./node_modules/@material-ui/core/esm/ButtonBase/ButtonBase.js:89:22)
+    at WithStyles (webpack-internal:///./node_modules/@material-ui/core/node_modules/@material-ui/styles/esm/withStyles/withStyles.js:61:31)
+    at Fab (webpack-internal:///./node_modules/@material-ui/core/esm/Fab/Fab.js:150:24)
+    at WithStyles (webpack-internal:///./node_modules/@material-ui/core/node_modules/@material-ui/styles/esm/withStyles/withStyles.js:61:31)
+    at ChatFlutuante (webpack-internal:///./src/components/chat/ChatFlutuante.tsx:216:21)
+    at LoadableComponent (webpack-internal:///./node_modules/next/dist/shared/lib/loadable.js:87:9)
+    at AutenticacaoProvider (webpack-internal:///./src/data/contexts/AutenticacaoContext.tsx:27:88)
+    at ThemeProvider (webpack-internal:///./node_modules/@emotion/react/dist/emotion-element-489459f2.browser.development.esm.js:94:50)
+    at MantineProvider (webpack-internal:///./node_modules/@mantine/styles/esm/theme/MantineProvider.js:78:3)
+    at ot (webpack-internal:///./node_modules/styled-components/dist/styled-components.browser.esm.js:30:20467)
+    at ThemeProvider (webpack-internal:///./node_modules/@material-ui/core/node_modules/@material-ui/styles/esm/ThemeProvider/ThemeProvider.js:42:24)
+    at App (webpack-internal:///./src/pages/_app.tsx:95:11)
+    at PathnameContextProviderAdapter (webpack-internal:///./node_modules/next/dist/shared/lib/router/adapters.js:62:11)
+    at ErrorBoundary (webpack-internal:///./node_modules/next/dist/compiled/@next/react-dev-overlay/dist/client.js:303:63)
+    at ReactDevOverlay (webpack-internal:///./node_modules/next/dist/compiled/@next/react-dev-overlay/dist/client.js:852:919)
+    at Container (webpack-internal:///./node_modules/next/dist/client/index.js:62:1)
+    at AppContainer (webpack-internal:///./node_modules/next/dist/client/index.js:172:11)
+    at Root (webpack-internal:///./node_modules/next/dist/client/index.js:347:11)
+(anonymous) @ injected.js:27
+console.error @ client.js:2
+(anonymous) @ injected.js:27
+window.console.error @ next-dev.js:23
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+printWarning @ react.development.js:210
+error @ react.development.js:184
+checkPropTypes @ react.development.js:2075
+validatePropTypes @ react.development.js:2276
+createElementWithValidation @ react.development.js:2380
+WithStyles @ withStyles.js:92
+renderWithHooks @ react-dom.development.js:16305
+updateForwardRef @ react-dom.development.js:19221
+beginWork @ react-dom.development.js:21631
+beginWork$1 @ react-dom.development.js:27421
+performUnitOfWork @ react-dom.development.js:26552
+workLoopSync @ react-dom.development.js:26461
+renderRootSync @ react-dom.development.js:26429
+performSyncWorkOnRoot @ react-dom.development.js:26080
+flushSyncCallbacks @ react-dom.development.js:12042
+eval @ react-dom.development.js:25646Understand this error
+injected.js:27 Erro ao consultar usuarios: FirebaseError: Missing or insufficient permissions.
+(anonymous) @ injected.js:27
+console.error @ client.js:2
+(anonymous) @ injected.js:27
+window.console.error @ next-dev.js:23
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+(anonymous) @ injected.js:27
+consultar @ Colecao.ts:73
+await in consultar
+carregarUsuarios @ ChatFlutuante.tsx:322
+eval @ ChatFlutuante.tsx:333
+commitHookEffectListMount @ react-dom.development.js:23145
+commitPassiveMountOnFiber @ react-dom.development.js:24921
+commitPassiveMountEffects_complete @ react-dom.development.js:24886
+commitPassiveMountEffects_begin @ react-dom.development.js:24873
+commitPassiveMountEffects @ react-dom.development.js:24861
+flushPassiveEffectsImpl @ react-dom.development.js:27034
+flushPassiveEffects @ react-dom.development.js:26979
+commitRootImpl @ react-dom.development.js:26930
+commitRoot @ react-dom.development.js:26677
+performSyncWorkOnRoot @ react-dom.development.js:26112
+flushSyncCallbacks @ react-dom.development.js:12042
+eval @ react-dom.development.js:25646Understand this error
+injected.js:27 Erro ao consultar usuarios: FirebaseError: Missing or insufficient permissions.

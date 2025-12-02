@@ -1,0 +1,49 @@
+{
+  "name": "Despachante Beto Dehon",
+  "short_name": "Beto Dehon",
+  "description": "Aplicativo oficial do Despachante Beto Dehon. Serviços de documentação veicular, transferências e consultorias, tudo na palma da sua mão.",
+  "lang": "pt-BR",
+  "orientation": "portrait",
+  "start_url": "/empresas",
+  "display": "standalone",
+  "scope": "/",
+  "background_color": "#111915",   
+  "theme_color": "#17C671",        
+  "dir": "ltr",
+  "categories": ["produtividade", "automotivo", "utilidades"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nova Consulta",
+      "short_name": "Consulta",
+      "description": "Acesse consultas rápidas de veículos",
+      "url": "/consulta"
+    },
+    {
+      "name": "Solicitar Serviço",
+      "short_name": "Serviço",
+      "description": "Peça um serviço com um clique",
+      "url": "/servicos"
+    },
+    {
+      "name": "Contato Rápido",
+      "short_name": "Contato",
+      "description": "Fale direto com o Beto Dheon",
+      "url": "/contato"
+    }
+  ]
+}

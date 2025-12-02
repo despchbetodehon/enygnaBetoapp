@@ -1,0 +1,27 @@
+~/workspace$ tsc --noEmit
+src/components/chat/ChatFlutuante.tsx:463:27 - error TS2367: This comparison appears to be unintentional because the types 'number' and 'string' have no overlap.
+
+463       .filter((_, key) => key !== user.id)
+                              ~~~~~~~~~~~~~~~
+
+src/components/enterprises/betodespa/chamadosti/ListaChamados.tsx:417:72 - error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: BoxProps, context?: any): ReactElement<any, any> | Component<BoxProps, any, any> | null', gave the following error.
+    Type '{ children: Element[]; mt: number; display: string; flexWrap: string; gap: number; }' is not assignable to type 'IntrinsicAttributes & BoxProps'.
+      Property 'gap' does not exist on type 'IntrinsicAttributes & BoxProps'.
+  Overload 2 of 2, '(props: PropsWithChildren<BoxProps>, context?: any): ReactElement<any, any> | Component<BoxProps, any, any> | null', gave the following error.
+    Type '{ children: Element[]; mt: number; display: string; flexWrap: string; gap: number; }' is not assignable to type 'IntrinsicAttributes & BoxProps & { children?: ReactNode; }'.
+      Property 'gap' does not exist on type 'IntrinsicAttributes & BoxProps & { children?: ReactNode; }'.
+
+417                             <Box mt={1} display="flex" flexWrap="wrap" gap={1}>
+                                                                           ~~~
+
+
+src/components/enterprises/betodespa/chamadosti/ListaChamados.tsx:626:19 - error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { component: ElementType<any>; } & { align?: Alignment | undefined; children?: ReactNode; color?: "inherit" | "initial" | "primary" | "secondary" | "error" | "textPrimary" | "textSecondary" | undefined; ... 5 more ...; variantMapping?: Partial<...> | undefined; } & CommonProps<...> & Pick<...>): Element', gave the following error.
+    Property 'component' is missing in type '{ children: string; variant: "h6"; color: "textSecondary"; mt: number; }' but required in type '{ component: ElementType<any>; }'.
+  Overload 2 of 2, '(props: DefaultComponentProps<TypographyTypeMap<{}, "span">>): Element', gave the following error.
+    Type '{ children: string; variant: "h6"; color: "textSecondary"; mt: number; }' is not assignable to type 'IntrinsicAttributes & { align?: Alignment | undefined; children?: ReactNode; color?: "inherit" | "initial" | "primary" | "secondary" | "error" | "textPrimary" | "textSecondary" | undefined; ... 5 more ...; variantMapping?: Partial<...> | undefined; } & CommonProps<...> & Pick<...>'.
+      Property 'mt' does not exist on type 'IntrinsicAttributes & { align?: Alignment | undefined; children?: ReactNode; color?: "inherit" | "initial" | "primary" | "secondary" | "error" | "textPrimary" | "textSecondary" | undefined; ... 5 more ...; variantMapping?: Partial<...> | undefined; } & CommonProps<...> & Pick<...>'.
+
+626                   <Typography variant="h6" color="textSecondary" mt={2}>
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,0 +1,313 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===================================
+    // FUNÇÕES AUXILIARES DE SEGURANÇA
+    // ===================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function userExists() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/usuarios/$(request.auth.token.email));
+    }
+
+    function isActiveUser() {
+      return userExists() &&
+             get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.ativo == true &&
+             get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.consentimentoLGPD == true;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+             userExists() &&
+             (get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.permissao == 'Administrador' ||
+              get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.permissao == 'administrador');
+    }
+
+    function isColaborador() {
+      return isAuthenticated() &&
+             userExists() &&
+             (get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.permissao in ['Colaborador', 'colaborador', 'Administrador', 'administrador']);
+    }
+
+    function isCEO() {
+      return isAuthenticated() &&
+             userExists() &&
+             (get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.permissao in ['CEO', 'Administrador', 'administrador']);
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.token.email == userId;
+    }
+
+    function hasValidSize() {
+      return request.resource.size < 1000000;
+    }
+
+    function hasValidSensitiveData() {
+      return !('senha' in request.resource.data) &&
+             !('senhaPlainText' in request.resource.data) &&
+             !('password' in request.resource.data);
+    }
+
+    function hasLGPDCompliance() {
+      return request.resource.data.consentimentoLGPD == true &&
+             request.resource.data.dataConsentimento is timestamp &&
+             request.resource.data.aceitouTermos == true;
+    }
+
+    function notTooFrequent() {
+      return request.time > resource.data.ultimaAtualizacao + duration.value(1, 's');
+    }
+
+    function hasAuditFields() {
+      return request.resource.data.keys().hasAll(['timestamp', 'userId']);
+    }
+
+    function isSafeData() {
+      return hasValidSensitiveData() && hasValidSize();
+    }
+
+    // ===================================
+    // USUÁRIOS - LGPD COMPLIANT
+    // ===================================
+    
+    match /usuarios/{userId} {
+      allow read: if isAdmin() || (isAuthenticated() && isOwner(userId));
+      allow create: if isAdmin() || (!isAuthenticated() && isSafeData());
+      allow update: if isAdmin() || (isAuthenticated() && isOwner(userId) && isSafeData());
+      allow delete: if isAdmin() || (isAuthenticated() && isOwner(userId));
+    }
+
+    // ===================================
+    // REQUERIMENTOS - ACESSO PÚBLICO PARA CRIAÇÃO E LEITURA
+    // ===================================
+
+    match /Betodespachanteintrncaodevendaoficial/{docId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if isAdmin() || isColaborador();
+      
+      allow delete: if isAdmin();
+    }
+
+    match /Betodespachanteintrncaodevendaoficialdigital/{docId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if isAdmin() || (isAuthenticated() && isOwner(userId));
+      allow delete: if isAdmin() || (isAuthenticated() && isOwner(userId));
+    }
+
+    match /Betodespachanteanuencia/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if true;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /Betodespachante/transferencia/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if true;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /Betodespachanteprocuracaoeletronica/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if true;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /Betodespachanteprocuracao/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if true;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /Betodespachantetransferencia/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if true;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // COLEÇÕES ADMINISTRATIVAS
+    // ===================================
+
+    match /CodigosDeAcesso/{codigoId} {
+      allow read:  if true;
+      allow create: if isAdmin();
+      allow update:  if true;
+      allow delete: if isAdmin();
+    }
+
+    match /OrdensDeServicoBludata/{docId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /analises_cache/{docId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /bancodecontato/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if isAdmin() || isActiveUser();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // CHAMADOS TI
+    // ===================================
+
+    match /chamadosTI/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if isAdmin() || isActiveUser();
+      allow update: if isAdmin() || isColaborador();
+      allow delete: if isAdmin();
+    }
+
+    match /chamadosti/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if isAdmin() || isActiveUser();
+      allow update: if isAdmin() || isColaborador();
+      allow delete: if isAdmin();
+    }
+
+    match /beto/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if isAdmin() || isActiveUser();
+      allow update: if isAdmin() || isColaborador();
+      allow delete: if isAdmin();
+
+      match /chamadosti/{chamadoId} {
+        allow read: if isAdmin() || isActiveUser();
+        allow create: if isAdmin() || isActiveUser();
+        allow update: if isAdmin() || isColaborador();
+        allow delete: if isAdmin();
+      }
+    }
+
+    // ===================================
+    // CHAT
+    // ===================================
+
+    match /chatPublico/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if isAdmin() || isActiveUser();
+      allow update: if isAdmin() || isOwner(resource.data.senderId);
+      allow delete: if isAdmin();
+    }
+
+    match /chats/{chatId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if isAdmin() || isActiveUser();
+      allow update: if isAdmin() || isActiveUser();
+      allow delete: if isAdmin();
+
+      match /mensagens/{msgId} {
+        allow read: if isAdmin() || isActiveUser();
+        allow create: if isAdmin() || isActiveUser();
+        allow update: if isAdmin();
+        allow delete: if isAdmin();
+      }
+    }
+
+    // ===================================
+    // EMPRESAS
+    // ===================================
+
+    match /empresasProcuracao/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if isAdmin() || isActiveUser();
+      allow update: if isAdmin() || isColaborador();
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // AUDITORIA E LGPD
+    // ===================================
+
+    match /acessos_auditoria/{docId} {
+      allow read: if isAdmin();
+      allow create: if true;
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+
+    match /solicitacoes_exclusao_lgpd/{docId} {
+      allow read: if isAdmin() || isOwner(resource.data.email);
+      allow create: if true;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /logs/{docId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // COLEÇÕES DE DESENVOLVIMENTO
+    // ===================================
+
+    match /code/{docId} {
+      allow read: if isAdmin() || isColaborador();
+      allow create: if isAdmin() || isColaborador();
+      allow update: if isAdmin() || isColaborador();
+      allow delete: if isAdmin();
+    }
+
+    match /items/{docId} {
+      allow read: if isAdmin() || isActiveUser();
+      allow create: if isAdmin() || isActiveUser();
+      allow update: if isAdmin() || isColaborador();
+      allow delete: if isAdmin();
+    }
+
+    match /test/{docId} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ===================================
+    // SEGURANÇA - HONEYPOT E BLACKLIST
+    // ===================================
+
+    match /honeypot/{docId} {
+      allow read: if isAdmin();
+      allow write: if true;
+    }
+
+    match /blacklist_ips/{ip} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /anomalies/{docId} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ===================================
+    // REGRA PADRÃO - BLOQUEIO TOTAL
+    // ===================================
+
+   
+  }
+}

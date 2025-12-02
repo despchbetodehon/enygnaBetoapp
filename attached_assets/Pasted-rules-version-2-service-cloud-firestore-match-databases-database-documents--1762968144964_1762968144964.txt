@@ -1,0 +1,272 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===================================
+    // FUNÇÕES AUXILIARES AVANÇADAS
+    // ===================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function userExists() {
+      return isAuthenticated() &&
+             exists(/databases/$(database)/documents/usuarios/$(request.auth.token.email));
+    }
+
+    function isActiveUser() {
+      return userExists() &&
+             get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.ativo == true &&
+             get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.consentimentoLGPD == true;
+    }
+
+    function isAdmin() {
+      return isActiveUser() &&
+             get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.permissao == 'Administrador';
+    }
+
+    function isColaborador() {
+      return isActiveUser() &&
+             get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.permissao in ['Colaborador', 'Administrador'];
+    }
+
+    function isCEO() {
+      return isActiveUser() &&
+             get(/databases/$(database)/documents/usuarios/$(request.auth.token.email)).data.permissao in ['CEO', 'Administrador'];
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.token.email == userId;
+    }
+
+    // Validação de tamanho de documento (1MB max)
+    function hasValidSize() {
+      return request.resource.size < 1000000;
+    }
+
+    // Validação de dados sensíveis - impede armazenamento de senhas em texto plano
+    function hasValidSensitiveData() {
+      return !('senha' in request.resource.data) &&
+             !('senhaPlainText' in request.resource.data) &&
+             !('password' in request.resource.data);
+    }
+
+    // Validação de estrutura de dados obrigatórios para LGPD
+    function hasLGPDCompliance() {
+      return request.resource.data.consentimentoLGPD == true &&
+             request.resource.data.dataConsentimento is timestamp &&
+             request.resource.data.aceitouTermos == true;
+    }
+
+    // Rate limiting básico - previne spam
+    function notTooFrequent() {
+      return request.time > resource.data.ultimaAtualizacao + duration.value(1, 's');
+    }
+
+    // Validação de campos obrigatórios para auditoria
+    function hasAuditFields() {
+      return request.resource.data.keys().hasAll(['timestamp', 'userId']);
+    }
+
+    // ===================================
+    // COLEÇÕES DE ANUÊNCIA E TRANSFERÊNCIA
+    // ===================================
+
+    match /Betodespachanteanuencia/{documentId} {
+      allow read: if true; // Leitura pública
+      allow create: if true; // Criação pública
+      allow update: if isAuthenticated(); // Usuários autenticados podem atualizar
+      allow delete: if isAdmin();
+    }
+
+    match /Betodespachantetransferencia/{documentId} {
+      allow read: if true; // Leitura pública
+      allow create: if true; // Criação pública
+      allow update: if isAuthenticated(); // Usuários autenticados podem atualizar
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // COLEÇÃO DE USUÁRIOS - LGPD COMPLIANT
+    // ===================================
+    match /usuarios/{userId} {
+      allow read: if isAuthenticated(); // Permite usuários autenticados consultarem outros usuários
+      allow create: if true; // Permite criação de novos usuários
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isOwner(userId) || isAdmin(); // Direito ao esquecimento (LGPD)
+    }
+
+    // ===================================
+    // AUDITORIA E COMPLIANCE LGPD
+    // ===================================
+
+    // Logs de acesso - apenas sistema via servidor
+    match /acessos_auditoria/{docId} {
+      allow read: if isAdmin();
+      allow write: if false; // Apenas via Admin SDK
+    }
+
+    // Solicitações de exclusão LGPD
+    match /solicitacoes_exclusao_lgpd/{docId} {
+      allow read: if isAdmin() || isOwner(resource.data.email);
+      allow create: if true; // Qualquer pessoa pode solicitar
+      allow update: if isAdmin();
+      allow delete: if false; // Manter histórico
+    }
+
+    // Logs do sistema - apenas leitura admin
+    match /logs/{docId} {
+      allow read: if isAdmin();
+      allow create: if false; // Apenas servidor
+      allow update: if false;
+      allow delete: if isAdmin() && request.time > resource.data.timestamp + duration.value(90, 'd'); // Retenção 90 dias
+    }
+
+    // ===================================
+    // CÓDIGOS DE ACESSO - CONTROLADO
+    // ===================================
+    match /CodigosDeAcesso/{codigoId} {
+      allow read: if true; // Público para validação
+      allow create: if isColaborador(); // Apenas colaboradores podem criar
+      allow update: if isColaborador() && notTooFrequent();
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // REQUERIMENTOS - PÚBLICO COM AUDITORIA
+    // ===================================
+
+    match /Betodespachanteintrncaodevendaoficial/{docId} {
+      allow read: if true; // Leitura pública para acompanhamento
+      allow create: if true; // Permite criação pública
+      allow update: if isAuthenticated(); // Qualquer usuário autenticado pode atualizar
+      allow delete: if isAdmin();
+    }
+
+    match /Betodespachanteintrncaodevendaoficialdigital/{docId} {
+      allow read: if true; // Leitura pública para acompanhamento
+      allow create: if true; // Permite criação pública
+      allow update: if isAuthenticated(); // Qualquer usuário autenticado pode atualizar
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // PROCURAÇÕES E TRANSFERÊNCIAS - DADOS SENSÍVEIS
+    // ===================================
+
+    match /Betodespachanteprocuracao/{docId} {
+      allow read: if isActiveUser() || isColaborador();
+      allow create: if isActiveUser() && hasValidSize() && hasAuditFields();
+      allow update: if isColaborador() && notTooFrequent();
+      allow delete: if isAdmin();
+    }
+
+    match /Betodespachante/{docId} {
+      allow read: if isActiveUser() || isColaborador();
+      allow create: if isActiveUser() && hasValidSize() && hasAuditFields();
+      allow update: if isColaborador() && notTooFrequent();
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // CHAMADOS TI - ACESSO CONTROLADO
+    // ===================================
+
+    match /chamadosti/{docId} {
+      allow read: if isActiveUser();
+      allow create: if isActiveUser() && hasValidSize() && hasAuditFields();
+      allow update: if isColaborador() || (isActiveUser() && isOwner(resource.data.userId));
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // CHAT - DADOS PESSOAIS PROTEGIDOS
+    // ===================================
+
+    match /chatPublico/{docId} {
+      allow read: if isActiveUser();
+      allow create: if isActiveUser() && hasValidSize() && hasAuditFields();
+      allow update: if isOwner(resource.data.senderId) || isAdmin();
+      allow delete: if isOwner(resource.data.senderId) || isAdmin();
+    }
+
+    // ===================================
+    // ORDENS DE SERVIÇO BLUDATA
+    // ===================================
+
+    match /OrdensDeServicoBludata/{docId} {
+      allow read: if isActiveUser() || isColaborador();
+      allow create: if isColaborador() && hasValidSize() && hasAuditFields();
+      allow update: if isColaborador() && notTooFrequent();
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // CODE COLLECTION - DESENVOLVIMENTO
+    // ===================================
+
+    match /code/{docId} {
+      allow read: if isColaborador();
+      allow create: if isColaborador();
+      allow update: if isColaborador();
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // ITEMS - LISTA GENÉRICA CONTROLADA
+    // ===================================
+
+    match /items/{docId} {
+      allow read: if isActiveUser();
+      allow create: if isActiveUser() && hasValidSize();
+      allow update: if isColaborador();
+      allow delete: if isAdmin();
+    }
+
+    // ===================================
+    // TESTE - APENAS DESENVOLVIMENTO
+    // ===================================
+
+    match /test/{docId} {
+      allow read: if isColaborador();
+      allow write: if isAdmin();
+    }
+
+    // ===================================
+    // HONEYPOT - DETECÇÃO DE BOTS
+    // ===================================
+
+    match /honeypot/{docId} {
+      allow read: if false;
+      allow write: if true; // Captura tentativas de acesso não autorizado
+    }
+
+    // ===================================
+    // BLACKLIST - IPs BLOQUEADOS
+    // ===================================
+
+    match /blacklist_ips/{ip} {
+      allow read: if isAdmin();
+      allow write: if false; // Apenas via servidor
+    }
+
+    // ===================================
+    // DETECÇÃO DE ANOMALIAS
+    // ===================================
+
+    match /anomalies/{docId} {
+      allow read: if isAdmin();
+      allow write: if false; // Apenas sistema
+    }
+
+    // ===================================
+    // REGRA PADRÃO - SEGURANÇA MÁXIMA
+    // ===================================
+
+    match /{document=**} {
+      allow read: if false;
+      allow write: if false;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+
+{
+  "creator": "Gustavo de Aguiar Martins",
+  "company": "EnygmaDevLab",
+  "email": "guga@gmail.com",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "copyright": "© 2024 EnygmaDevLab - Gustavo de Aguiar Martins",
+  "license": "Proprietary",
+  "client": "Beto Despachante",
+  "licenseType": "Uso sob licença - Não transferência de propriedade",
+  "intellectualProperty": "Gustavo de Aguiar Martins",
+  "legalNotice": "Sistema desenvolvido por Gustavo de Aguiar Martins (EnygmaDevLab). Propriedade intelectual protegida por lei brasileira (Lei 9.609/98 e 9.610/98).",
+  "fingerprint": "RW55Z21hRGV2TGFiOkd1c3Rhdm9EZUFndWlhck1hcnRpbnM6MjAyNA==",
+  "version": "1.0.0",
+  "lastUpdate": "2024",
+  "hiddenSignature": {
+    "_creator": "R3VzdGF2byBkZSBBZ3VpYXIgTWFydGlucw==",
+    "_company": "RW55Z21hRGV2TGFi",
+    "_timestamp": "183d5f4000",
+    "_hash": "R0FNOjE3MzU2ODk2MDAwMDA6RU5ZR01B",
+    "_integrity": "SHA256:GAM:ENYGMA:2024"
+  }
+}

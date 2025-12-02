@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+  }
+  
+  .form {
+    padding: 16px;
+    max-width: 500px;
+    width: 100%;
+  }
+  

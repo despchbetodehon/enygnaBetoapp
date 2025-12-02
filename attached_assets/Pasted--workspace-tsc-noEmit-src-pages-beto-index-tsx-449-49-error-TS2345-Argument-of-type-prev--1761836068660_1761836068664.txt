@@ -1,0 +1,21 @@
+~/workspace$ tsc --noEmit
+src/pages/beto/index.tsx:449:49 - error TS2345: Argument of type '(prev: { nome: string; email: string; senha: string; permissao: "Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"; }) => { ...; }' is not assignable to parameter of type 'SetStateAction<{ nome: string; email: string; senha: string; permissao: "Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"; }>'.
+  Type '(prev: { nome: string; email: string; senha: string; permissao: "Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"; }) => { ...; }' is not assignable to type '(prevState: { nome: string; email: string; senha: string; permissao: "Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"; }) => { ...; }'.
+    Call signature return types '{ permissao: string; nome: string; email: string; senha: string; }' and '{ nome: string; email: string; senha: string; permissao: "Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"; }' are incompatible.
+      The types of 'permissao' are incompatible between these types.
+        Type 'string' is not assignable to type '"Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"'.
+
+449                 onChange={(e) => setNewUserData(prev => ({ ...prev, permissao: e.target.value as string }))}
+                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/pages/beto/index.tsx:492:50 - error TS2345: Argument of type '(prev: { id: string; nome: string; email: string; permissao: "Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"; ativo: boolean; senha: string; }) => { ...; }' is not assignable to parameter of type 'SetStateAction<{ id: string; nome: string; email: string; permissao: "Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"; ativo: boolean; senha: string; }>'.
+  Type '(prev: { id: string; nome: string; email: string; permissao: "Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"; ativo: boolean; senha: string; }) => { ...; }' is not assignable to type '(prevState: { id: string; nome: string; email: string; permissao: "Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"; ativo: boolean; senha: string; }) => { ...; }'.
+    Call signature return types '{ permissao: string; id: string; nome: string; email: string; ativo: boolean; senha: string; }' and '{ id: string; nome: string; email: string; permissao: "Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"; ativo: boolean; senha: string; }' are incompatible.
+      The types of 'permissao' are incompatible between these types.
+        Type 'string' is not assignable to type '"Visualizador" | "cliente" | "empresa" | "colaborador" | "administrador" | "Operador" | "Administrador" | "CEO" | "EnygmaDeveloper"'.
+
+492                 onChange={(e) => setEditUserData(prev => ({ ...prev, permissao: e.target.value as string }))}
+                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Found 2 errors in the same file, starting at: src/pages/beto/index.tsx:449

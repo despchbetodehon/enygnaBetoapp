@@ -1,0 +1,446 @@
+
+Failed to compile
+./src/logic/firebase/config/app.ts
+Error: 
+  x cannot reassign to a variable declared with `const`
+    ,-[/home/runner/workspace/src/logic/firebase/config/app.ts:12:1]
+ 12 | };
+ 13 | 
+ 14 | // Inicializar Firebase apenas uma vez
+ 15 | export const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+    :              ^|^
+    :               `-- const variable was declared here
+ 16 | 
+ 17 | // Inicializar Firestore
+ 18 | export const db = getFirestore(app);
+ 19 | 
+ 20 | // Inicializar Storage com configurações de CORS apropriadas
+ 21 | export const storage = getStorage(app);
+ 22 | 
+ 23 | console.log('🔥 Firebase inicializado:', {
+ 24 |   projectId: firebaseConfig.projectId,
+ 25 |   storageBucket: firebaseConfig.storageBucket,
+ 26 | });
+ 27 | 
+ 28 | const firebaseConfig = {
+ 29 |     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+ 30 |     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+ 31 |     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+ 32 |     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+ 33 |     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+ 34 |     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+ 35 | };
+ 36 | 
+ 37 | // Validar configuração
+ 38 | if (typeof window !== 'undefined') {
+ 39 |     if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'undefined') {
+ 40 |         console.error('❌ FIREBASE_API_KEY não configurada! Verifique o arquivo .env.local');
+ 41 |         console.error('Variáveis disponíveis:', Object.keys(process.env).filter(k => k.startsWith('NEXT_PUBLIC_FIREBASE')));
+ 42 |     }
+ 43 | 
+ 44 |     console.log('✅ Configuração Firebase carregada:', {
+ 45 |         projectId: firebaseConfig.projectId,
+ 46 |         authDomain: firebaseConfig.authDomain,
+ 47 |         storageBucket: firebaseConfig.storageBucket,
+ 48 |         hasApiKey: !!firebaseConfig.apiKey,
+ 49 |         apiKeyLength: firebaseConfig.apiKey?.length
+ 50 |     });
+ 51 | }
+ 52 | 
+ 53 | let app: FirebaseApp;
+ 54 | let db: Firestore;
+ 55 | let storage: FirebaseStorage;
+ 56 | 
+ 57 | // Inicializar Firebase tanto no cliente quanto no servidor
+ 58 | if (!getApps().length) {
+ 59 |     try {
+ 60 |         app = initializeApp(firebaseConfig);
+    :         ^|^
+    :          `-- cannot reassign
+ 61 |     } catch (error) {
+ 62 |         throw new Error('Falha na inicialização');
+ 63 |     }
+    `----
+
+  x cannot reassign to a variable declared with `const`
+    ,-[/home/runner/workspace/src/logic/firebase/config/app.ts:12:1]
+ 12 | };
+ 13 | 
+ 14 | // Inicializar Firebase apenas uma vez
+ 15 | export const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+    :              ^|^
+    :               `-- const variable was declared here
+ 16 | 
+ 17 | // Inicializar Firestore
+ 18 | export const db = getFirestore(app);
+ 19 | 
+ 20 | // Inicializar Storage com configurações de CORS apropriadas
+ 21 | export const storage = getStorage(app);
+ 22 | 
+ 23 | console.log('🔥 Firebase inicializado:', {
+ 24 |   projectId: firebaseConfig.projectId,
+ 25 |   storageBucket: firebaseConfig.storageBucket,
+ 26 | });
+ 27 | 
+ 28 | const firebaseConfig = {
+ 29 |     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+ 30 |     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+ 31 |     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+ 32 |     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+ 33 |     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+ 34 |     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+ 35 | };
+ 36 | 
+ 37 | // Validar configuração
+ 38 | if (typeof window !== 'undefined') {
+ 39 |     if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'undefined') {
+ 40 |         console.error('❌ FIREBASE_API_KEY não configurada! Verifique o arquivo .env.local');
+ 41 |         console.error('Variáveis disponíveis:', Object.keys(process.env).filter(k => k.startsWith('NEXT_PUBLIC_FIREBASE')));
+ 42 |     }
+ 43 | 
+ 44 |     console.log('✅ Configuração Firebase carregada:', {
+ 45 |         projectId: firebaseConfig.projectId,
+ 46 |         authDomain: firebaseConfig.authDomain,
+ 47 |         storageBucket: firebaseConfig.storageBucket,
+ 48 |         hasApiKey: !!firebaseConfig.apiKey,
+ 49 |         apiKeyLength: firebaseConfig.apiKey?.length
+ 50 |     });
+ 51 | }
+ 52 | 
+ 53 | let app: FirebaseApp;
+ 54 | let db: Firestore;
+ 55 | let storage: FirebaseStorage;
+ 56 | 
+ 57 | // Inicializar Firebase tanto no cliente quanto no servidor
+ 58 | if (!getApps().length) {
+ 59 |     try {
+ 60 |         app = initializeApp(firebaseConfig);
+ 61 |     } catch (error) {
+ 62 |         throw new Error('Falha na inicialização');
+ 63 |     }
+ 64 | } else {
+ 65 |     app = getApps()[0];
+    :     ^|^
+    :      `-- cannot reassign
+ 66 | }
+ 67 | 
+ 68 | db = getFirestore(app);
+    `----
+
+  x cannot reassign to a variable declared with `const`
+    ,-[/home/runner/workspace/src/logic/firebase/config/app.ts:15:1]
+ 15 | export const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+ 16 | 
+ 17 | // Inicializar Firestore
+ 18 | export const db = getFirestore(app);
+    :              ^|
+    :               `-- const variable was declared here
+ 19 | 
+ 20 | // Inicializar Storage com configurações de CORS apropriadas
+ 21 | export const storage = getStorage(app);
+ 22 | 
+ 23 | console.log('🔥 Firebase inicializado:', {
+ 24 |   projectId: firebaseConfig.projectId,
+ 25 |   storageBucket: firebaseConfig.storageBucket,
+ 26 | });
+ 27 | 
+ 28 | const firebaseConfig = {
+ 29 |     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+ 30 |     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+ 31 |     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+ 32 |     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+ 33 |     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+ 34 |     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+ 35 | };
+ 36 | 
+ 37 | // Validar configuração
+ 38 | if (typeof window !== 'undefined') {
+ 39 |     if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'undefined') {
+ 40 |         console.error('❌ FIREBASE_API_KEY não configurada! Verifique o arquivo .env.local');
+ 41 |         console.error('Variáveis disponíveis:', Object.keys(process.env).filter(k => k.startsWith('NEXT_PUBLIC_FIREBASE')));
+ 42 |     }
+ 43 | 
+ 44 |     console.log('✅ Configuração Firebase carregada:', {
+ 45 |         projectId: firebaseConfig.projectId,
+ 46 |         authDomain: firebaseConfig.authDomain,
+ 47 |         storageBucket: firebaseConfig.storageBucket,
+ 48 |         hasApiKey: !!firebaseConfig.apiKey,
+ 49 |         apiKeyLength: firebaseConfig.apiKey?.length
+ 50 |     });
+ 51 | }
+ 52 | 
+ 53 | let app: FirebaseApp;
+ 54 | let db: Firestore;
+ 55 | let storage: FirebaseStorage;
+ 56 | 
+ 57 | // Inicializar Firebase tanto no cliente quanto no servidor
+ 58 | if (!getApps().length) {
+ 59 |     try {
+ 60 |         app = initializeApp(firebaseConfig);
+ 61 |     } catch (error) {
+ 62 |         throw new Error('Falha na inicialização');
+ 63 |     }
+ 64 | } else {
+ 65 |     app = getApps()[0];
+ 66 | }
+ 67 | 
+ 68 | db = getFirestore(app);
+    : ^|
+    :  `-- cannot reassign
+ 69 | storage = getStorage(app);
+ 70 | 
+ 71 | export { app, db, storage };
+    `----
+
+  x cannot reassign to a variable declared with `const`
+    ,-[/home/runner/workspace/src/logic/firebase/config/app.ts:18:1]
+ 18 | export const db = getFirestore(app);
+ 19 | 
+ 20 | // Inicializar Storage com configurações de CORS apropriadas
+ 21 | export const storage = getStorage(app);
+    :              ^^^|^^^
+    :                 `-- const variable was declared here
+ 22 | 
+ 23 | console.log('🔥 Firebase inicializado:', {
+ 24 |   projectId: firebaseConfig.projectId,
+ 25 |   storageBucket: firebaseConfig.storageBucket,
+ 26 | });
+ 27 | 
+ 28 | const firebaseConfig = {
+ 29 |     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+ 30 |     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+ 31 |     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+ 32 |     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+ 33 |     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+ 34 |     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+ 35 | };
+ 36 | 
+ 37 | // Validar configuração
+ 38 | if (typeof window !== 'undefined') {
+ 39 |     if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'undefined') {
+ 40 |         console.error('❌ FIREBASE_API_KEY não configurada! Verifique o arquivo .env.local');
+ 41 |         console.error('Variáveis disponíveis:', Object.keys(process.env).filter(k => k.startsWith('NEXT_PUBLIC_FIREBASE')));
+ 42 |     }
+ 43 | 
+ 44 |     console.log('✅ Configuração Firebase carregada:', {
+ 45 |         projectId: firebaseConfig.projectId,
+ 46 |         authDomain: firebaseConfig.authDomain,
+ 47 |         storageBucket: firebaseConfig.storageBucket,
+ 48 |         hasApiKey: !!firebaseConfig.apiKey,
+ 49 |         apiKeyLength: firebaseConfig.apiKey?.length
+ 50 |     });
+ 51 | }
+ 52 | 
+ 53 | let app: FirebaseApp;
+ 54 | let db: Firestore;
+ 55 | let storage: FirebaseStorage;
+ 56 | 
+ 57 | // Inicializar Firebase tanto no cliente quanto no servidor
+ 58 | if (!getApps().length) {
+ 59 |     try {
+ 60 |         app = initializeApp(firebaseConfig);
+ 61 |     } catch (error) {
+ 62 |         throw new Error('Falha na inicialização');
+ 63 |     }
+ 64 | } else {
+ 65 |     app = getApps()[0];
+ 66 | }
+ 67 | 
+ 68 | db = getFirestore(app);
+ 69 | storage = getStorage(app);
+    : ^^^|^^^
+    :    `-- cannot reassign
+ 70 | 
+ 71 | export { app, db, storage };
+    `----
+
+  x the name `firebaseConfig` is defined multiple times
+    ,-[/home/runner/workspace/src/logic/firebase/config/app.ts:2:1]
+  2 | import { getFirestore, Firestore, connectFirestoreEmulator } from 'firebase/firestore';
+  3 | import { getStorage, FirebaseStorage, connectStorageEmulator } from 'firebase/storage';
+  4 | 
+  5 | const firebaseConfig = {
+    :       ^^^^^^^|^^^^^^
+    :              `-- previous definition of `firebaseConfig` here
+  6 |   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  7 |   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  8 |   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  9 |   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+ 10 |   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+ 11 |   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+ 12 | };
+ 13 | 
+ 14 | // Inicializar Firebase apenas uma vez
+ 15 | export const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+ 16 | 
+ 17 | // Inicializar Firestore
+ 18 | export const db = getFirestore(app);
+ 19 | 
+ 20 | // Inicializar Storage com configurações de CORS apropriadas
+ 21 | export const storage = getStorage(app);
+ 22 | 
+ 23 | console.log('🔥 Firebase inicializado:', {
+ 24 |   projectId: firebaseConfig.projectId,
+ 25 |   storageBucket: firebaseConfig.storageBucket,
+ 26 | });
+ 27 | 
+ 28 | const firebaseConfig = {
+    :       ^^^^^^^|^^^^^^
+    :              `-- `firebaseConfig` redefined here
+ 29 |     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+ 30 |     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+ 31 |     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    `----
+
+  x the name `app` is defined multiple times
+    ,-[/home/runner/workspace/src/logic/firebase/config/app.ts:12:1]
+ 12 | };
+ 13 | 
+ 14 | // Inicializar Firebase apenas uma vez
+ 15 | export const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+    :              ^|^
+    :               `-- previous definition of `app` here
+ 16 | 
+ 17 | // Inicializar Firestore
+ 18 | export const db = getFirestore(app);
+ 19 | 
+ 20 | // Inicializar Storage com configurações de CORS apropriadas
+ 21 | export const storage = getStorage(app);
+ 22 | 
+ 23 | console.log('🔥 Firebase inicializado:', {
+ 24 |   projectId: firebaseConfig.projectId,
+ 25 |   storageBucket: firebaseConfig.storageBucket,
+ 26 | });
+ 27 | 
+ 28 | const firebaseConfig = {
+ 29 |     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+ 30 |     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+ 31 |     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+ 32 |     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+ 33 |     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+ 34 |     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+ 35 | };
+ 36 | 
+ 37 | // Validar configuração
+ 38 | if (typeof window !== 'undefined') {
+ 39 |     if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'undefined') {
+ 40 |         console.error('❌ FIREBASE_API_KEY não configurada! Verifique o arquivo .env.local');
+ 41 |         console.error('Variáveis disponíveis:', Object.keys(process.env).filter(k => k.startsWith('NEXT_PUBLIC_FIREBASE')));
+ 42 |     }
+ 43 | 
+ 44 |     console.log('✅ Configuração Firebase carregada:', {
+ 45 |         projectId: firebaseConfig.projectId,
+ 46 |         authDomain: firebaseConfig.authDomain,
+ 47 |         storageBucket: firebaseConfig.storageBucket,
+ 48 |         hasApiKey: !!firebaseConfig.apiKey,
+ 49 |         apiKeyLength: firebaseConfig.apiKey?.length
+ 50 |     });
+ 51 | }
+ 52 | 
+ 53 | let app: FirebaseApp;
+    :     ^|^
+    :      `-- `app` redefined here
+ 54 | let db: Firestore;
+ 55 | let storage: FirebaseStorage;
+    `----
+
+  x the name `db` is defined multiple times
+    ,-[/home/runner/workspace/src/logic/firebase/config/app.ts:15:1]
+ 15 | export const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+ 16 | 
+ 17 | // Inicializar Firestore
+ 18 | export const db = getFirestore(app);
+    :              ^|
+    :               `-- previous definition of `db` here
+ 19 | 
+ 20 | // Inicializar Storage com configurações de CORS apropriadas
+ 21 | export const storage = getStorage(app);
+ 22 | 
+ 23 | console.log('🔥 Firebase inicializado:', {
+ 24 |   projectId: firebaseConfig.projectId,
+ 25 |   storageBucket: firebaseConfig.storageBucket,
+ 26 | });
+ 27 | 
+ 28 | const firebaseConfig = {
+ 29 |     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+ 30 |     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+ 31 |     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+ 32 |     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+ 33 |     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+ 34 |     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+ 35 | };
+ 36 | 
+ 37 | // Validar configuração
+ 38 | if (typeof window !== 'undefined') {
+ 39 |     if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'undefined') {
+ 40 |         console.error('❌ FIREBASE_API_KEY não configurada! Verifique o arquivo .env.local');
+ 41 |         console.error('Variáveis disponíveis:', Object.keys(process.env).filter(k => k.startsWith('NEXT_PUBLIC_FIREBASE')));
+ 42 |     }
+ 43 | 
+ 44 |     console.log('✅ Configuração Firebase carregada:', {
+ 45 |         projectId: firebaseConfig.projectId,
+ 46 |         authDomain: firebaseConfig.authDomain,
+ 47 |         storageBucket: firebaseConfig.storageBucket,
+ 48 |         hasApiKey: !!firebaseConfig.apiKey,
+ 49 |         apiKeyLength: firebaseConfig.apiKey?.length
+ 50 |     });
+ 51 | }
+ 52 | 
+ 53 | let app: FirebaseApp;
+ 54 | let db: Firestore;
+    :     ^|
+    :      `-- `db` redefined here
+ 55 | let storage: FirebaseStorage;
+ 56 | 
+ 57 | // Inicializar Firebase tanto no cliente quanto no servidor
+    `----
+
+  x the name `storage` is defined multiple times
+    ,-[/home/runner/workspace/src/logic/firebase/config/app.ts:18:1]
+ 18 | export const db = getFirestore(app);
+ 19 | 
+ 20 | // Inicializar Storage com configurações de CORS apropriadas
+ 21 | export const storage = getStorage(app);
+    :              ^^^|^^^
+    :                 `-- previous definition of `storage` here
+ 22 | 
+ 23 | console.log('🔥 Firebase inicializado:', {
+ 24 |   projectId: firebaseConfig.projectId,
+ 25 |   storageBucket: firebaseConfig.storageBucket,
+ 26 | });
+ 27 | 
+ 28 | const firebaseConfig = {
+ 29 |     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+ 30 |     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+ 31 |     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+ 32 |     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+ 33 |     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+ 34 |     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+ 35 | };
+ 36 | 
+ 37 | // Validar configuração
+ 38 | if (typeof window !== 'undefined') {
+ 39 |     if (!firebaseConfig.apiKey || firebaseConfig.apiKey === 'undefined') {
+ 40 |         console.error('❌ FIREBASE_API_KEY não configurada! Verifique o arquivo .env.local');
+ 41 |         console.error('Variáveis disponíveis:', Object.keys(process.env).filter(k => k.startsWith('NEXT_PUBLIC_FIREBASE')));
+ 42 |     }
+ 43 | 
+ 44 |     console.log('✅ Configuração Firebase carregada:', {
+ 45 |         projectId: firebaseConfig.projectId,
+ 46 |         authDomain: firebaseConfig.authDomain,
+ 47 |         storageBucket: firebaseConfig.storageBucket,
+ 48 |         hasApiKey: !!firebaseConfig.apiKey,
+ 49 |         apiKeyLength: firebaseConfig.apiKey?.length
+ 50 |     });
+ 51 | }
+ 52 | 
+ 53 | let app: FirebaseApp;
+ 54 | let db: Firestore;
+ 55 | let storage: FirebaseStorage;
+    :     ^^^|^^^
+    :        `-- `storage` redefined here
+ 56 | 
+ 57 | // Inicializar Firebase tanto no cliente quanto no servidor
+ 58 | if (!getApps().length) {
+    `----
+This error occurred during the build process and can only be dismissed by fixing the error.

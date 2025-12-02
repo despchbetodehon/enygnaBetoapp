@@ -1,0 +1,122 @@
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 1433, Col 19
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 1434, Col 47
+Argument of type '(prev: File[]) => unknown[]' is not assignable to parameter of type 'SetStateAction<File[]>'. Type '(prev: File[]) => unknown[]' is not assignable to type '(prevState: File[]) => File[]'. Type 'unknown[]' is not assignable to type 'File[]'. Type 'unknown' is not assignable to type 'File'.
+(typescript)
+Ln 1435, Col 21
+Argument of type 'unknown' is not assignable to parameter of type 'File'.
+(typescript)
+Ln 1437, Col 32
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 1722, Col 19
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 1723, Col 47
+Argument of type '(prev: { [key: number]: File[]; }) => { [x: number]: File[] | unknown[]; }' is not assignable to parameter of type 'SetStateAction<{ [key: number]: File[]; }>'. Type '(prev: { [key: number]: File[]; }) => { [x: number]: File[] | unknown[]; }' is not assignable to type '(prevState: { [key: number]: File[]; }) => { [key: number]: File[]; }'. Type '{ [x: number]: File[] | unknown[]; }' is not assignable to type '{ [key: number]: File[]; }'. 'number' index signatures are incompatible. Type 'File[] | unknown[]' is not assignable to type 'File[]'. Type 'unknown[]' is not assignable to type 'File[]'.
+(typescript)
+Ln 1725, Col 31
+Argument of type 'unknown' is not assignable to parameter of type 'File'.
+(typescript)
+Ln 1731, Col 38
+'adicionarProcuradorEmpresa' is declared but its value is never read.
+(typescript)
+Ln 1814, Col 9
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2148, Col 19
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2149, Col 47
+Argument of type '(prev: File[]) => unknown[]' is not assignable to parameter of type 'SetStateAction<File[]>'. Type '(prev: File[]) => unknown[]' is not assignable to type '(prevState: File[]) => File[]'. Type 'unknown[]' is not assignable to type 'File[]'.
+(typescript)
+Ln 2150, Col 21
+Argument of type 'unknown' is not assignable to parameter of type 'File'.
+(typescript)
+Ln 2152, Col 26
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2157, Col 19
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2158, Col 47
+Argument of type '(prev: File[]) => unknown[]' is not assignable to parameter of type 'SetStateAction<File[]>'. Type '(prev: File[]) => unknown[]' is not assignable to type '(prevState: File[]) => File[]'. Type 'unknown[]' is not assignable to type 'File[]'.
+(typescript)
+Ln 2159, Col 29
+Argument of type 'unknown' is not assignable to parameter of type 'File'.
+(typescript)
+Ln 2161, Col 33
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2166, Col 19
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2167, Col 47
+Argument of type '(prev: File[]) => unknown[]' is not assignable to parameter of type 'SetStateAction<File[]>'. Type '(prev: File[]) => unknown[]' is not assignable to type '(prevState: File[]) => File[]'. Type 'unknown[]' is not assignable to type 'File[]'.
+(typescript)
+Ln 2168, Col 31
+Argument of type 'unknown' is not assignable to parameter of type 'File'.
+(typescript)
+Ln 2170, Col 33
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2175, Col 19
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2176, Col 47
+Argument of type '(prev: File[]) => unknown[]' is not assignable to parameter of type 'SetStateAction<File[]>'. Type '(prev: File[]) => unknown[]' is not assignable to type '(prevState: File[]) => File[]'. Type 'unknown[]' is not assignable to type 'File[]'.
+(typescript)
+Ln 2177, Col 27
+Argument of type 'unknown' is not assignable to parameter of type 'File'.
+(typescript)
+Ln 2179, Col 31
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2184, Col 19
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2185, Col 47
+Argument of type '(prev: File[]) => unknown[]' is not assignable to parameter of type 'SetStateAction<File[]>'. Type '(prev: File[]) => unknown[]' is not assignable to type '(prevState: File[]) => File[]'. Type 'unknown[]' is not assignable to type 'File[]'.
+(typescript)
+Ln 2186, Col 29
+Argument of type 'unknown' is not assignable to parameter of type 'File'.
+(typescript)
+Ln 2188, Col 31
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2193, Col 19
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 2194, Col 47
+Argument of type 'unknown[]' is not assignable to parameter of type 'File[]'. Type 'unknown' is not assignable to type 'File'.
+(typescript)
+Ln 2195, Col 34
+'openCropDialog' is declared but its value is never read.
+(typescript)
+Ln 2405, Col 9
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 3123, Col 19
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 3124, Col 47
+Argument of type '(prev: File[]) => unknown[]' is not assignable to parameter of type 'SetStateAction<File[]>'. Type '(prev: File[]) => unknown[]' is not assignable to type '(prevState: File[]) => File[]'. Type 'unknown[]' is not assignable to type 'File[]'.
+(typescript)
+Ln 3125, Col 21
+Argument of type 'unknown' is not assignable to parameter of type 'File'.
+(typescript)
+Ln 3127, Col 26
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 3132, Col 19
+Property 'files' does not exist on type 'EventTarget & (HTMLInputElement | HTMLTextAreaElement)'. Property 'files' does not exist on type 'EventTarget & HTMLTextAreaElement'.
+(typescript)
+Ln 3133, Col 47
+Argument of type '(prev: File[]) => unknown[]' is not assignable to parameter of type 'SetStateAction<File[]>'. Type '(prev: File[]) => unknown[]' is not assignable to type '(prevState: File[]) => File[]'. Type 'unknown[]' is not assignable to type 'File[]'.
+(typescript)
+Ln 3134, Col 32
+Argument of type 'unknown' is not assignable to parameter of type 'File'.
+(typescript)

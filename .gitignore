@@ -1,0 +1,29 @@
+# Pastas de build e cache
+.next/
+out/
+node_modules/
+# Arquivos de ambiente
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+# Arquivos temporários e de log
+*.log
+*.zip
+# Ignorar arquivos do sistema
+.DS_Store
+Thumbs.db
+# Configurações de IDEs
+.vscode/
+.idea/
+
+# managed
+**.data.json
+**.node-persist**
+**_IGNORE_**
+# end managed
+
+# Credenciais Firebase (NUNCA commitar!)
+**/betoappteste-firebase-adminsdk-*.json
+**/*firebase-adminsdk*.json

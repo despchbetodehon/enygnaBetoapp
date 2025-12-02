@@ -1,0 +1,27 @@
+~/workspace$ tsc --noEmit
+src/components/chat/ChatFlutuante.tsx:918:65 - error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: BoxProps, context?: any): ReactElement<any, any> | Component<BoxProps, any, any> | null', gave the following error.
+    Type '{ children: Element[]; mb: number; display: string; flexDirection: string; gap: number; }' is not assignable to type 'IntrinsicAttributes & BoxProps'.
+      Property 'gap' does not exist on type 'IntrinsicAttributes & BoxProps'.
+  Overload 2 of 2, '(props: PropsWithChildren<BoxProps>, context?: any): ReactElement<any, any> | Component<BoxProps, any, any> | null', gave the following error.
+    Type '{ children: Element[]; mb: number; display: string; flexDirection: string; gap: number; }' is not assignable to type 'IntrinsicAttributes & BoxProps & { children?: ReactNode; }'.
+      Property 'gap' does not exist on type 'IntrinsicAttributes & BoxProps & { children?: ReactNode; }'.
+
+918             <Box mb={0.5} display="flex" flexDirection="column" gap={0.5}>
+                                                                    ~~~
+
+
+src/components/chat/ChatFlutuante.tsx:926:35 - error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: BoxProps, context?: any): ReactElement<any, any> | Component<BoxProps, any, any> | null', gave the following error.
+    Type '{ children: Element; display: string; gap: number; }' is not assignable to type 'IntrinsicAttributes & BoxProps'.
+      Property 'gap' does not exist on type 'IntrinsicAttributes & BoxProps'.
+  Overload 2 of 2, '(props: PropsWithChildren<BoxProps>, context?: any): ReactElement<any, any> | Component<BoxProps, any, any> | null', gave the following error.
+    Type '{ children: Element; display: string; gap: number; }' is not assignable to type 'IntrinsicAttributes & BoxProps & { children?: ReactNode; }'.
+      Property 'gap' does not exist on type 'IntrinsicAttributes & BoxProps & { children?: ReactNode; }'.
+
+926               <Box display="flex" gap={0.5}>
+                                      ~~~
+
+
+
+Found 2 errors in the same file, starting at: src/components/chat/ChatFlutuante.tsx:918
