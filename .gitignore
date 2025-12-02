@@ -27,3 +27,8 @@ Thumbs.db
 # Credenciais Firebase (NUNCA commitar!)
 **/betoappteste-firebase-adminsdk-*.json
 **/*firebase-adminsdk*.json
+
+# local env files
+.env*.local
+.env.local
+.env
