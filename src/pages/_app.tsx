@@ -103,7 +103,7 @@ function App({ Component, pageProps }: AppProps) {
 
       // Marcar no objeto window (não aparece em Object.keys())
       Object.defineProperty(window, '__AUTHORSHIP__', {
-        value: AUTHORSHIP,
+        value: AUTHORERSHIP,
         writable: false,
         enumerable: false,
         configurable: false

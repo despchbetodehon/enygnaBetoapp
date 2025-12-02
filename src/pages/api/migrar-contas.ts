@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import admin from 'firebase-admin';
+import crypto from 'crypto';
 
-// Inicializar Firebase Admin SDK uma única vez
+// Inicializar Firebase Admin SDK
 if (!admin.apps.length) {
   try {
     const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
@@ -20,19 +21,11 @@ if (!admin.apps.length) {
         privateKey,
       }),
     });
-    
+
     console.log('✅ Firebase Admin SDK inicializado com sucesso');
   } catch (error) {
     console.error('❌ Erro ao inicializar Firebase Admin:', error);
   }
-}
-
-async function hashPassword(password: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -45,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Se for requisição para criar usuário
   if (criarUsuario && usuario) {
     try {
-      const emailNormalizado = usuario.email.toLowerCase(); // Normaliza o email
+      const emailNormalizado = usuario.email.trim().toLowerCase();
       console.log('👤 Criando novo usuário:', emailNormalizado);
 
       const db = admin.firestore();
@@ -54,7 +47,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Verificar se usuário já existe
       const usuarioExistente = await usuariosRef.doc(emailNormalizado).get();
       if (usuarioExistente.exists) {
-        return res.status(400).json({ error: 'Usuário já existe com este email' });
+        console.log('⚠️ Usuário já existe:', emailNormalizado);
+        return res.status(400).json({ 
+          error: 'Usuário já existe com este email',
+          email: emailNormalizado
+        });
       }
 
       // Gerar salt e hash com salt
@@ -84,6 +81,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       };
 
       await usuariosRef.doc(emailNormalizado).set(novoUsuario);
+      console.log('✅ Usuário criado com sucesso:', emailNormalizado);
 
       return res.status(200).json({
         sucesso: true,
@@ -103,7 +101,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({
         sucesso: false,
         error: 'Erro ao criar usuário',
-        detalhes: error.message
+        detalhes: error.message || 'Erro desconhecido'
       });
     }
   }
@@ -113,7 +111,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const emailNormalizado = req.body.email.trim().toLowerCase();
       const novaSenha = req.body.senha.trim();
-      const dadosAdicionais = req.body.dadosAdicionais || {};
 
       console.log('🔐 Atualizando senha para:', emailNormalizado);
 
@@ -136,33 +133,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const senhaHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-      // Atualizar usuário com nova senha e dados adicionais
-      const dadosAtualizacao: any = {
-        senhaHash: senhaHash,
+      // Atualizar senha
+      await userDocRef.update({
         salt: salt,
-        senha: admin.firestore.FieldValue.delete(),
+        senhaHash: senhaHash,
         ultimaAtualizacao: admin.firestore.FieldValue.serverTimestamp()
-      };
-
-      // Adicionar dados adicionais se fornecidos
-      if (dadosAdicionais.nome) dadosAtualizacao.nome = dadosAdicionais.nome;
-      if (dadosAdicionais.permissao) dadosAtualizacao.permissao = dadosAdicionais.permissao;
-      if (dadosAdicionais.ativo !== undefined) dadosAtualizacao.ativo = dadosAdicionais.ativo;
-
-      await userDocRef.update(dadosAtualizacao);
+      });
 
       console.log('✅ Senha atualizada com sucesso para:', emailNormalizado);
 
       return res.status(200).json({
         sucesso: true,
-        email: emailNormalizado,
-        mensagem: 'Senha atualizada com sucesso',
-        usuario: {
-          email: emailNormalizado,
-          salt: salt,
-          senhaHash: senhaHash,
-          lgpdCompliant: true
-        }
+        mensagem: 'Senha atualizada com sucesso'
       });
 
     } catch (error: any) {
@@ -170,112 +152,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({
         sucesso: false,
         error: 'Erro ao atualizar senha',
-        detalhes: error.message
+        detalhes: error.message || 'Erro desconhecido'
       });
     }
   }
 
-  // Caso contrário, executar migração normal
-  try {
-    console.log('🔒 Iniciando migração de senhas com Admin SDK...');
-
-    const db = admin.firestore();
-    const usuariosRef = db.collection('usuarios');
-    const snapshot = await usuariosRef.get();
-
-    let migrados = 0;
-    let erros = 0;
-    let jaConvertidos = 0;
-    const errosDetalhados: any[] = [];
-
-    const batch = db.batch();
-    let batchCount = 0;
-
-    for (const doc of snapshot.docs) {
-      const usuario = doc.data();
-
-      // Migrar usuários com senha em texto plano OU usuários com hash mas sem salt
-      if ((usuario.senha && !usuario.senhaHash) || (usuario.senhaHash && !usuario.salt)) {
-        try {
-          const senhaOriginal = usuario.senha || '';
-
-          if (!senhaOriginal) {
-            console.log(`⚠️ Usuário ${usuario.email} não tem senha original, pulando...`);
-            erros++;
-            errosDetalhados.push({
-              email: usuario.email,
-              erro: 'Senha original não encontrada - usuário precisa redefinir senha'
-            });
-            continue;
-          }
-
-          // Gerar salt e hash com salt
-          const salt = crypto.randomUUID();
-          const encoder = new TextEncoder();
-          const data = encoder.encode(senhaOriginal + salt);
-          const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-          const hashArray = Array.from(new Uint8Array(hashBuffer));
-          const senhaHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-          // Usar batch para melhor performance
-          const docRef = usuariosRef.doc(doc.id);
-          batch.update(docRef, {
-            senhaHash: senhaHash,
-            salt: salt,
-            senha: admin.firestore.FieldValue.delete(),
-            consentimentoLGPD: true,
-            aceitouTermos: true,
-            dataConsentimento: usuario.dataConsentimento || admin.firestore.FieldValue.serverTimestamp(),
-            ultimaAtualizacao: admin.firestore.FieldValue.serverTimestamp()
-          });
-
-          batchCount++;
-          migrados++;
-
-          // Commit batch a cada 500 operações (limite do Firestore)
-          if (batchCount >= 500) {
-            await batch.commit();
-            batchCount = 0;
-          }
-
-          console.log(`✅ Senha migrada com salt para: ${usuario.email}`);
-        } catch (error: any) {
-          erros++;
-          errosDetalhados.push({
-            email: usuario.email,
-            erro: error.message
-          });
-          console.error(`❌ Erro ao migrar ${usuario.email}:`, error);
-        }
-      } else if (usuario.senhaHash && usuario.salt) {
-        jaConvertidos++;
-      }
-    }
-
-    // Commit batch final
-    if (batchCount > 0) {
-      await batch.commit();
-    }
-
-    const resultado = {
-      sucesso: true,
-      migrados,
-      jaConvertidos,
-      erros,
-      total: snapshot.size,
-      errosDetalhados: errosDetalhados.length > 0 ? errosDetalhados : undefined
-    };
-
-    console.log('📊 Migração concluída:', resultado);
-
-    return res.status(200).json(resultado);
-
-  } catch (error: any) {
-    console.error('❌ Erro crítico na migração:', error);
-    return res.status(500).json({
-      sucesso: false,
-      error: 'Erro ao migrar contas',
-      detalhes: error.message
-    });
-  }
+  return res.status(400).json({ 
+    error: 'Requisição inválida. Forneça criarUsuario=true e dados do usuário, ou atualizarSenha=true com email e senha.' 
+  });
 }
