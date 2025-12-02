@@ -1,27 +1,29 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import admin from 'firebase-admin';
 
-// Inicializar Firebase Admin SDK
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
-}
+// Inicializar Firebase Admin SDK uma única vez
 if (!admin.apps.length) {
   try {
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+
+    if (!privateKey || !clientEmail || !projectId) {
+      console.error('❌ Variáveis de ambiente do Firebase Admin não configuradas');
+      throw new Error('Firebase Admin credentials not configured');
+    }
+
     admin.initializeApp({
       credential: admin.credential.cert({
-        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+        projectId,
+        clientEmail,
+        privateKey,
       }),
     });
+    
+    console.log('✅ Firebase Admin SDK inicializado com sucesso');
   } catch (error) {
-    console.error('Erro ao inicializar Firebase Admin:', error);
+    console.error('❌ Erro ao inicializar Firebase Admin:', error);
   }
 }
 
