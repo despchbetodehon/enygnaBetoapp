@@ -6,24 +6,40 @@ import crypto from 'crypto'; // Importar crypto para hashPasswordSecure
 if (!admin.apps.length) {
   const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
-  const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
+  let privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
 
   if (!projectId || !clientEmail || !privateKey) {
     console.error('❌ Variáveis de ambiente Firebase Admin não configuradas:', {
       hasProjectId: !!projectId,
       hasClientEmail: !!clientEmail,
-      hasPrivateKey: !!privateKey
+      hasPrivateKey: !!privateKey,
+      privateKeyLength: privateKey?.length || 0
     });
     throw new Error('Configuração do Firebase Admin incompleta');
   }
 
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId,
-      clientEmail,
-      privateKey: privateKey.replace(/\\n/g, '\n'),
-    }),
-  });
+  // Normalizar a private key - substituir \n literais por quebras de linha reais
+  privateKey = privateKey.replace(/\\n/g, '\n');
+
+  // Validar formato da chave
+  if (!privateKey.includes('-----BEGIN PRIVATE KEY-----') || !privateKey.includes('-----END PRIVATE KEY-----')) {
+    console.error('❌ Formato inválido da FIREBASE_ADMIN_PRIVATE_KEY');
+    throw new Error('Private key mal formatada');
+  }
+
+  try {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId,
+        clientEmail,
+        privateKey,
+      }),
+    });
+    console.log('✅ Firebase Admin SDK inicializado com sucesso');
+  } catch (initError: any) {
+    console.error('❌ Erro ao inicializar Firebase Admin:', initError.message);
+    throw initError;
+  }
 }
 
 // Hash seguro com salt
