@@ -746,6 +746,9 @@ function generateAnswer(message: string): string {
  * Handler Next.js API
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Garantir Content-Type JSON
+  res.setHeader('Content-Type', 'application/json');
+
   try {
     if (req.method !== 'POST') {
       res.setHeader('Allow', 'POST');

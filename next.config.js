@@ -73,6 +73,16 @@ const nextConfig = {
   // Environment variables validation
   env: {
     CUSTOM_KEY: process.env.NODE_ENV,
+  },
+
+  // Configuração de API routes
+  async rewrites() {
+    return [];
+  },
+
+  // Garantir que erros de API retornem JSON
+  async redirects() {
+    return [];
   }
 }
 

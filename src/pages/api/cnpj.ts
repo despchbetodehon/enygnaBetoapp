@@ -2,6 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import apiCache from '@/utils/apiCache';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Garantir Content-Type JSON
+  res.setHeader('Content-Type', 'application/json');
+  
   const { cnpj } = req.query;
 
   if (!cnpj || typeof cnpj !== 'string' || !/^\d{14}$/.test(cnpj)) {

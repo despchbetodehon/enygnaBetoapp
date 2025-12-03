@@ -3,6 +3,9 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/logic/firebase/config/app';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Garantir Content-Type JSON
+  res.setHeader('Content-Type', 'application/json');
+
   if (req.method !== 'POST') {
     return res.status(405).json({ response: '', error: 'Método não permitido' });
   }

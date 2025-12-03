@@ -11,6 +11,13 @@ const MAX_LOGIN_ATTEMPTS = 5;
 const LOGIN_WINDOW = 300000; // 5 minutos
 
 export function middleware(request: NextRequest) {
+  // Garantir Content-Type para rotas de API
+  if (request.nextUrl.pathname.startsWith('/api/')) {
+    const response = NextResponse.next();
+    response.headers.set('Content-Type', 'application/json');
+    return response;
+  }
+
   // Obter IP de forma segura
   // Vercel sempre usa proxy, então confiar no x-forwarded-for em produção
   const isVercel = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';

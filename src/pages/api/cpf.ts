@@ -3,6 +3,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import apiCache from '@/utils/apiCache';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Garantir Content-Type JSON
+  res.setHeader('Content-Type', 'application/json');
+  
   const { cpf } = req.query;
 
   if (!cpf || typeof cpf !== 'string' || !/^\d{11}$/.test(cpf)) {
