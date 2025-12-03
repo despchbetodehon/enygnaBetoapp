@@ -59,28 +59,30 @@ export default class ServicosUsuario {
             }
 
             const responseData = await response.json();
-            console.log('✅ Resposta da API:', { hasUser: !!responseData.user });
+            console.log('✅ Resposta da API:', responseData);
             
             const { user } = responseData;
 
-            // Buscar dados completos do usuário do Firestore
-            const usuarioDoBanco = await this.consultar(user.email);
-            
-            if (!usuarioDoBanco) {
-                console.error('Usuário autenticado mas não encontrado no banco:', user.email);
-                throw new Error('Erro ao carregar dados do usuário');
+            if (!user) {
+                console.error('❌ API retornou resposta sem dados de usuário');
+                throw new Error('Erro ao processar autenticação');
             }
 
-            // Retornar usuário completo do banco de dados
-            return {
-                ...usuarioDoBanco,
+            // A API já retorna os dados completos do usuário do Firestore
+            // Apenas normalizar e retornar
+            const usuarioCompleto: Usuario = {
                 uid: user.uid || user.email,
-                email: (usuarioDoBanco as any).email || '',
-                nome: (usuarioDoBanco as any).nome || '',
-                permissao: (usuarioDoBanco as any).permissao || user.permissao || 'Visualizador'
+                email: user.email,
+                nome: user.nome || '',
+                imagemUrl: user.imagemUrl || '/betologo.jpeg',
+                permissao: user.permissao || 'Visualizador',
+                id: user.email
             } as Usuario;
+
+            console.log('✅ Usuário autenticado com sucesso:', usuarioCompleto.email);
+            return usuarioCompleto;
         } catch (error: any) {
-            console.error('Erro ao logar com email e senha:', error);
+            console.error('❌ Erro ao logar com email e senha:', error);
             throw error;
         }
     }

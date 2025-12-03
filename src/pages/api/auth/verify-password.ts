@@ -132,15 +132,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const usuarioCompleto = {
       uid: userDoc.id,
       email: userData.email,
-      nome: userData.nome,
+      nome: userData.nome || '',
       imagemUrl: userData.imagemUrl || '/betologo.jpeg',
       permissao: userData.permissao || 'Visualizador',
-      ativo: userData.ativo !== undefined ? userData.ativo : true
+      ativo: userData.ativo !== undefined ? userData.ativo : true,
+      dataCriacao: userData.dataCriacao || new Date().toISOString(),
+      id: userDoc.id
     };
 
-    // A autenticação agora é feita no lado do cliente com o token retornado
-    // Este endpoint apenas verifica as credenciais e retorna os dados do usuário
     console.log('✅ Verificação de credenciais bem-sucedida via Firestore');
+    console.log('📦 Retornando dados do usuário:', {
+      email: usuarioCompleto.email,
+      nome: usuarioCompleto.nome,
+      permissao: usuarioCompleto.permissao
+    });
 
     return res.status(200).json({
       success: true,

@@ -165,39 +165,8 @@ export function AutenticacaoProvider({ children }: AutenticacaoProviderProps) {
 
       console.log("✅ Usuário autenticado com sucesso:", usuarioAutenticado)
 
-      // Buscar dados completos do Firestore
-      try {
-        const usuarioCompleto = await servicos.usuario.obterUsuario(usuarioAutenticado.email)
-        if (usuarioCompleto) {
-          console.log("✅ Dados completos do usuário carregados:", usuarioCompleto)
-          setUsuario(usuarioCompleto)
-
-          // Salvar no localStorage se usuário escolheu manter conectado
-          if (typeof window !== 'undefined') {
-            if (manterConectado) {
-              localStorage.setItem('manterConectado', 'true')
-              localStorage.setItem('usuarioAutenticado', JSON.stringify({
-                ...usuarioCompleto,
-                timestamp: Date.now()
-              }))
-            } else {
-              localStorage.removeItem('manterConectado')
-              localStorage.removeItem('usuarioAutenticado')
-            }
-
-            // Salvar credenciais se usuário escolheu lembrar
-            if (lembrarSenha) {
-              localStorage.setItem('lembrarCredenciais', JSON.stringify({ email, senha }))
-            } else {
-              localStorage.removeItem('lembrarCredenciais')
-            }
-          }
-
-          return usuarioCompleto
-        }
-      } catch (dbError) {
-        console.error("⚠️ Erro ao buscar dados completos, usando dados básicos:", dbError)
-      }
+      // Definir o usuário no estado
+      setUsuario(usuarioAutenticado)
 
       // Salvar no localStorage se usuário escolheu manter conectado
       if (typeof window !== 'undefined') {
