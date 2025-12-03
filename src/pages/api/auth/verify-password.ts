@@ -1,46 +1,27 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import admin from 'firebase-admin';
+import { initializeApp, getApps } from 'firebase/app';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import crypto from 'crypto'; // Importar crypto para hashPasswordSecure
 
-// Inicializar Firebase Admin SDK
-if (!admin.apps.length) {
-  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-  const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
-  let privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
+// Configuração do Firebase Client
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+};
 
-  if (!projectId || !clientEmail || !privateKey) {
-    console.error('❌ Variáveis de ambiente Firebase Admin não configuradas:', {
-      hasProjectId: !!projectId,
-      hasClientEmail: !!clientEmail,
-      hasPrivateKey: !!privateKey,
-      privateKeyLength: privateKey?.length || 0
-    });
-    throw new Error('Configuração do Firebase Admin incompleta');
-  }
-
-  // Normalizar a private key - substituir \n literais por quebras de linha reais
-  privateKey = privateKey.replace(/\\n/g, '\n');
-
-  // Validar formato da chave
-  if (!privateKey.includes('-----BEGIN PRIVATE KEY-----') || !privateKey.includes('-----END PRIVATE KEY-----')) {
-    console.error('❌ Formato inválido da FIREBASE_ADMIN_PRIVATE_KEY');
-    throw new Error('Private key mal formatada');
-  }
-
-  try {
-    admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId,
-        clientEmail,
-        privateKey,
-      }),
-    });
-    console.log('✅ Firebase Admin SDK inicializado com sucesso');
-  } catch (initError: any) {
-    console.error('❌ Erro ao inicializar Firebase Admin:', initError.message);
-    throw initError;
-  }
+// Inicializar Firebase apenas uma vez
+let app: any;
+if (!getApps().length) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = getApps()[0];
 }
+
+const db = getFirestore(app);
 
 // Hash seguro com salt
 async function hashPasswordSecure(password: string, salt?: string): Promise<{ hash: string; salt: string }> {
@@ -72,9 +53,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method !== 'POST') {
       console.log('❌ Método não permitido:', req.method);
-      return res.status(405).json({ 
+      return res.status(405).json({
         success: false,
-        error: 'Método não permitido' 
+        error: 'Método não permitido'
       });
     }
 
@@ -82,31 +63,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (!email || !password) {
       console.log('❌ Email ou senha não fornecidos');
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        error: 'Email e senha são obrigatórios' 
+        error: 'Email e senha são obrigatórios'
       });
     }
 
     console.log('🔐 Iniciando verificação de senha para:', email);
 
-    const db = admin.firestore();
-
     // Aguardar um pouco para garantir que o usuário foi criado (se for novo)
     await new Promise(resolve => setTimeout(resolve, 100));
 
     // Buscar pelo email exato como foi digitado
-    const userDoc = await db.collection('usuarios').doc(email).get();
+    const userDocRef = doc(db, 'usuarios', email);
+    const userDoc = await getDoc(userDocRef);
 
-    console.log('🔍 Verificando login para:', email, '- Existe:', userDoc.exists, '- ID do documento:', userDoc.id);
+    console.log('🔍 Verificando login para:', email, '- Existe:', userDoc.exists(), '- ID do documento:', userDoc.id);
 
-    if (!userDoc.exists) {
+    if (!userDoc.exists()) {
       console.log('❌ Usuário não encontrado:', email);
       // Delay para prevenir enumeração de usuários
       await new Promise(resolve => setTimeout(resolve, 1000));
-      return res.status(401).json({ 
+      return res.status(401).json({
         success: false,
-        error: 'Usuário não cadastrado. Por favor, entre em contato com o administrador.' 
+        error: 'Usuário não cadastrado. Por favor, entre em contato com o administrador.'
       });
     }
 
@@ -116,18 +96,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Verificar se o usuário está ativo
     if (userData.ativo === false) {
       console.log('❌ Usuário desativado:', email);
-      return res.status(403).json({ 
+      return res.status(403).json({
         success: false,
-        error: 'Usuário desativado' 
+        error: 'Usuário desativado'
       });
     }
 
     // Verificar se tem salt - se não tiver, usuário não foi migrado corretamente
     if (!userData.salt) {
       console.log('⚠️ Usuário sem salt - necessita remigração:', email);
-      return res.status(401).json({ 
+      return res.status(401).json({
         success: false,
-        error: 'Conta necessita atualização. Entre em contato com o suporte.' 
+        error: 'Conta necessita atualização. Entre em contato com o suporte.'
       });
     }
 
@@ -140,9 +120,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log('❌ Senha incorreta para:', email);
       // Delay para prevenir força bruta
       await new Promise(resolve => setTimeout(resolve, 1000));
-      return res.status(401).json({ 
+      return res.status(401).json({
         success: false,
-        error: 'Credenciais inválidas' 
+        error: 'Credenciais inválidas'
       });
     }
 
@@ -150,57 +130,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Preparar dados completos do usuário
     const usuarioCompleto = {
-        uid: userDoc.id,
-        email: userData.email,
-        nome: userData.nome,
-        imagemUrl: userData.imagemUrl || '/betologo.jpeg',
-        permissao: userData.permissao || 'Visualizador',
-        ativo: userData.ativo !== undefined ? userData.ativo : true
+      uid: userDoc.id,
+      email: userData.email,
+      nome: userData.nome,
+      imagemUrl: userData.imagemUrl || '/betologo.jpeg',
+      permissao: userData.permissao || 'Visualizador',
+      ativo: userData.ativo !== undefined ? userData.ativo : true
     };
 
-    // Criar token customizado do Firebase Auth com Custom Claims
-    try {
-        // Primeiro, definir as custom claims no usuário
-        try {
-            await admin.auth().setCustomUserClaims(email, {
-                permissao: usuarioCompleto.permissao,
-                email: usuarioCompleto.email,
-                ativo: usuarioCompleto.ativo
-            });
-            console.log('✅ Custom claims definidas para:', email);
-        } catch (claimsError) {
-            console.warn('⚠️ Erro ao definir custom claims:', claimsError);
-        }
+    // A autenticação agora é feita no lado do cliente com o token retornado
+    // Este endpoint apenas verifica as credenciais e retorna os dados do usuário
+    console.log('✅ Verificação de credenciais bem-sucedida via Firestore');
 
-        // Criar token customizado
-        const customToken = await admin.auth().createCustomToken(email, {
-            email: usuarioCompleto.email,
-            permissao: usuarioCompleto.permissao,
-            ativo: usuarioCompleto.ativo
-        });
-
-        console.log('✅ Token customizado criado para:', email);
-
-        return res.status(200).json({
-            success: true,
-            customToken,
-            user: usuarioCompleto
-        });
-    } catch (tokenError) {
-        console.error('❌ Erro ao criar token customizado:', tokenError);
-        // Retornar os dados do usuário mesmo se o token falhar
-        return res.status(200).json({
-            success: true,
-            user: usuarioCompleto
-        });
-    }
+    return res.status(200).json({
+      success: true,
+      user: usuarioCompleto
+    });
 
   } catch (error: any) {
     console.error('Erro na verificação:', error);
 
     // Garantir que sempre retorna JSON
     if (!res.headersSent) {
-      return res.status(500).json({ 
+      return res.status(500).json({
         success: false,
         error: 'Erro ao processar autenticação',
         message: error?.message || 'Erro desconhecido'

@@ -59,66 +59,29 @@ export default class ServicosUsuario {
             }
 
             const responseData = await response.json();
-            console.log('✅ Resposta da API:', { hasUser: !!responseData.user, hasToken: !!responseData.customToken });
+            console.log('✅ Resposta da API:', { hasUser: !!responseData.user });
             
-            const { user, customToken } = responseData;
+            const { user } = responseData;
 
-            // Se temos um token customizado, fazer login no Firebase Auth ANTES de buscar dados
-            if (customToken) {
-                try {
-                    const { getAuth, signInWithCustomToken } = await import('firebase/auth');
-                    const { app } = await import('@/logic/firebase/config/app');
-                    const auth = getAuth(app);
-                    
-                    await signInWithCustomToken(auth, customToken);
-                    console.log('✅ Autenticado no Firebase Auth com token customizado');
-                    
-                    // Aguardar um pouco para garantir que o token seja processado
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                } catch (authError) {
-                    console.error('❌ Erro ao autenticar no Firebase Auth:', authError);
-                    throw new Error('Falha na autenticação. Tente novamente.');
-                }
-            } else {
-                console.warn('⚠️ Token customizado não recebido');
-                throw new Error('Erro no processo de autenticação');
-            }
-
-            // Buscar dados completos do usuário APÓS autenticação
-            const usuarioDoBanco = await this.consultar(user.email)
+            // Buscar dados completos do usuário do Firestore
+            const usuarioDoBanco = await this.consultar(user.email);
             
             if (!usuarioDoBanco) {
-                console.error('Usuário autenticado mas não encontrado no banco:', user.email)
-                throw new Error('Erro ao carregar dados do usuário')
-            }
-
-            // Atualizar Custom Claims para garantir permissões corretas
-            try {
-                await fetch('/api/auth/update-claims', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: user.email,
-                        permissao: (usuarioDoBanco as any).permissao,
-                        ativo: (usuarioDoBanco as any).ativo
-                    })
-                });
-                console.log('✅ Custom claims sincronizadas');
-            } catch (claimsError) {
-                console.warn('⚠️ Erro ao atualizar custom claims:', claimsError);
+                console.error('Usuário autenticado mas não encontrado no banco:', user.email);
+                throw new Error('Erro ao carregar dados do usuário');
             }
 
             // Retornar usuário completo do banco de dados
             return {
                 ...usuarioDoBanco,
-                uid: user.uid,
+                uid: user.uid || user.email,
                 email: (usuarioDoBanco as any).email || '',
                 nome: (usuarioDoBanco as any).nome || '',
                 permissao: (usuarioDoBanco as any).permissao || user.permissao || 'Visualizador'
-            } as Usuario
+            } as Usuario;
         } catch (error: any) {
-            console.error('Erro ao logar com email e senha:', error)
-            throw error
+            console.error('Erro ao logar com email e senha:', error);
+            throw error;
         }
     }
 
