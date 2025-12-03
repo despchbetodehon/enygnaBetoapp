@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 interface AutenticacaoContextProps {
   carregando: boolean;
   usuario: Usuario | null;
+  loginGoogle: () => Promise<Usuario | null>;
   loginEmailSenha: (email: string, senha: string, lembrarSenha?: boolean, manterConectado?: boolean) => Promise<any>;
   logout: () => Promise<void>;
   atualizarUsuario: (novoUsuario: Usuario) => Promise<void>;
@@ -311,6 +312,7 @@ export function AutenticacaoProvider({ children }: AutenticacaoProviderProps) {
     <AutenticacaoContext.Provider value={{
       carregando,
       usuario,
+      loginGoogle,
       loginEmailSenha,
       logout,
       atualizarUsuario,
