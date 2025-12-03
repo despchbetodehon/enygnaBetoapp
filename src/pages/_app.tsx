@@ -122,6 +122,57 @@ function App({ Component, pageProps }: AppProps) {
     }
   }, []);
 
+  // Prevenir erros de JSON parse
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const originalFetch = window.fetch;
+      window.fetch = async (...args) => {
+        try {
+          const response = await originalFetch(...args);
+
+          // Clonar a resposta para poder ler o corpo múltiplas vezes
+          const clonedResponse = response.clone();
+
+          // Verificar se a resposta tem conteúdo antes de tentar parsear
+          const text = await clonedResponse.text();
+
+          if (!text || text.trim() === '') {
+            console.warn('⚠️ Resposta vazia recebida de:', args[0]);
+            return new Response(JSON.stringify({ error: 'Resposta vazia' }), {
+              status: 500,
+              headers: { 'Content-Type': 'application/json' }
+            });
+          }
+
+          // Tenta fazer o parse do JSON, se falhar, retorna um erro genérico
+          try {
+            JSON.parse(text);
+          } catch (e) {
+            console.error('❌ Erro ao parsear JSON:', args[0], e);
+            return new Response(JSON.stringify({ error: 'Erro ao processar resposta' }), {
+              status: 500,
+              headers: { 'Content-Type': 'application/json' }
+            });
+          }
+
+          return response; // Retorna a resposta original se tudo estiver OK
+        } catch (error) {
+          console.error('❌ Erro no fetch:', error);
+          return new Response(JSON.stringify({ error: 'Erro na requisição' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+      };
+
+      // Cleanup a função fetch modificada ao desmontar o componente
+      return () => {
+        window.fetch = originalFetch;
+      };
+    }
+  }, []);
+
+
   return (
     <MuiThemeProvider theme={muiTheme}>
       <CssBaseline />

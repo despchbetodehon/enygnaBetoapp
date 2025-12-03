@@ -13,9 +13,21 @@ const LOGIN_WINDOW = 300000; // 5 minutos
 export function middleware(request: NextRequest) {
   // Garantir Content-Type para rotas de API
   if (request.nextUrl.pathname.startsWith('/api/')) {
-    const response = NextResponse.next();
-    response.headers.set('Content-Type', 'application/json');
-    return response;
+    try {
+      const response = NextResponse.next();
+      response.headers.set('Content-Type', 'application/json');
+      response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+      return response;
+    } catch (error) {
+      console.error('❌ Erro no middleware:', error);
+      return new NextResponse(
+        JSON.stringify({ error: 'Erro interno do servidor' }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
   }
 
   // Obter IP de forma segura
