@@ -36,14 +36,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const { email, password } = req.body;
 
-  if (!email || !password) {
-    console.log('❌ Email ou senha não fornecidos');
-    return res.status(400).json({ error: 'Email e senha são obrigatórios' });
-  }
+    if (!email || !password) {
+      console.log('❌ Email ou senha não fornecidos');
+      return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+    }
 
-  console.log('🔐 Iniciando verificação de senha para:', email);
+    console.log('🔐 Iniciando verificação de senha para:', email);
 
-  try {
     const db = admin.firestore();
     
     // Aguardar um pouco para garantir que o usuário foi criado (se for novo)
