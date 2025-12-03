@@ -26,14 +26,15 @@ async function hashPasswordSecure(password: string, salt?: string): Promise<{ ha
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Garantir Content-Type JSON
-  res.setHeader('Content-Type', 'application/json');
+  try {
+    // Garantir Content-Type JSON
+    res.setHeader('Content-Type', 'application/json');
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método não permitido' });
-  }
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Método não permitido' });
+    }
 
-  const { email, password } = req.body;
+    const { email, password } = req.body;
 
   if (!email || !password) {
     console.log('❌ Email ou senha não fornecidos');
@@ -138,6 +139,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   } catch (error: any) {
     console.error('Erro na verificação:', error);
-    return res.status(500).json({ error: 'Erro ao processar autenticação' });
+    return res.status(500).json({ 
+      success: false,
+      error: 'Erro ao processar autenticação',
+      message: error?.message || 'Erro desconhecido'
+    });
+  } finally {
+    // Garantir que sempre há resposta
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        success: false,
+        error: 'Erro interno do servidor' 
+      });
+    }
   }
 }

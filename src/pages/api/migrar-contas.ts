@@ -29,12 +29,13 @@ if (!admin.apps.length) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Garantir Content-Type JSON
-  res.setHeader('Content-Type', 'application/json');
+  try {
+    // Garantir Content-Type JSON
+    res.setHeader('Content-Type', 'application/json');
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método não permitido' });
-  }
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Método não permitido' });
+    }
 
   const { criarUsuario, usuario } = req.body;
 
@@ -163,4 +164,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   return res.status(400).json({ 
     error: 'Requisição inválida. Forneça criarUsuario=true e dados do usuário, ou atualizarSenha=true com email e senha.' 
   });
+  } catch (globalError: any) {
+    console.error('❌ Erro global na API:', globalError);
+    return res.status(500).json({
+      sucesso: false,
+      error: 'Erro interno do servidor',
+      detalhes: globalError?.message || 'Erro desconhecido'
+    });
+  } finally {
+    // Garantir que sempre há resposta JSON
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        sucesso: false,
+        error: 'Erro interno do servidor' 
+      });
+    }
+  }
 }

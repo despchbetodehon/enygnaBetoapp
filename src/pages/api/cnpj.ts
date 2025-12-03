@@ -98,5 +98,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       error: 'Erro interno ao consultar CNPJ',
       details: (error as Error).message
     });
+  } finally {
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        success: false,
+        error: 'Resposta não enviada' 
+      });
+    }
   }
 }

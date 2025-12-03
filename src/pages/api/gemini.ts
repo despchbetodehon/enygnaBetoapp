@@ -94,5 +94,12 @@ ${JSON.stringify(allData, null, 2)}
       response: 'Erro técnico. Tente novamente mais tarde.',
       error: err.message || 'Erro desconhecido',
     });
+  } finally {
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        response: '',
+        error: 'Resposta não enviada' 
+      });
+    }
   }
 }

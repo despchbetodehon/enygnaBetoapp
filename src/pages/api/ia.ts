@@ -765,5 +765,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (err) {
     console.error('API /api/ia error:', err);
     return res.status(500).json({ error: 'Erro interno ao processar a solicitação.' });
+  } finally {
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        response: '',
+        error: 'Resposta não enviada' 
+      });
+    }
   }
 }
