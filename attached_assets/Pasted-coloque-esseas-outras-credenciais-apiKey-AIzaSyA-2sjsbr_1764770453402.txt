@@ -1,0 +1,23 @@
+coloque esseas outras credenciais 
+apiKey: "AIzaSyA_2sjsbrO0j1KF6x4MIfHySbzZbaTZrI8",
+  authDomain: "betoappteste.firebaseapp.com",
+  projectId: "betoappteste",
+  storageBucket: "betoappteste.firebasestorage.app",
+  messagingSenderId: "324172688019",
+  appId: "1:324172688019:web:7c8113a7d2e0cade153b66",
+  measurementId: "G-3VPFVCD89G"
+
+
+{
+  "type": "service_account",
+  "project_id": "betoappteste",
+  "private_key_id": "82fe5872f6de761450488a642bd916810d417021",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDWIGWigBnxjoS8\nIIC6coN9T0rD4ZrzgEXYqhEhNz74z6AIEQXZU/KNhJCdwwOLF3ycxw//x0Piy47q\n5+NQ2QIgj7kkdrrAX8CFJHnbnRvL/PRz1wo501pTjRJa277GHvCW3D5QeAnLq8hT\ncEXwhS5JQOF1kzQ9flO24B8TMJTcZPl3LUK6oKSmP9hOkscFzpjuJdjf4ifo34Oa\nmiUPJa2krR3AFvFQ4vjl6BGVijyy2epTgVPkPWNohQrDwuIYrnKwGiHsuN4YhWK8\nwjpMNoBb1ngb6073+DcwAHsGvHF4bEiPXRjxliN9tDhf06AzcFlD3V2fzHTSdYdA\n1UUrJ9iTAgMBAAECggEAFwT9mCYoY9kb+POPkzu7Wg3brkpDM7lPCPdjhwwe53W+\nsQ9PbylAsqkVOPidmWbpfRtDY46DBE846pUKUYc63NBGqZ5f/k1s74NX3F27/saP\nayKrlULc+413czAbhsYNvFIqGtGE0BIEI8A2rKBMtRBWDKNKIvBBRLA8dv4qirTX\nuNHGxuSzT/YwZQGw0g9S8yc6BnFh89OX5C4VqOjxOKUUFk2KGq4xuERuArxyoZ4F\n3Jh7ktKsYXGmSSScj0bxa9ZcrxdEOF0gt894PoN4dU1a7PQ7KJ4b5tH7JwlZI2Sq\nlcLHSMBW0tTs/ByidvI+Y/GN7nFbGFab7iEOHZVHTQKBgQD/3uJc7MaHYsH49ZwC\nUvblVBMtzKjf0LhBgCBUIs5ZR2kCqyzwftAEAnYj/36xvQgfdSO/1qWTPOYfOqw2\nB9Cv9+KwamwUFlJopmVG34AeWmdnDo6DCf9YaGG18K8jmjvWMeYYe9LiQS3aEWel\nBhfiGJnCe35JmHJ24P2dEj+EzwKBgQDWPBwvacRzdo+SrEu1UdcjVWSUYKhTcQcX\n9nfut+Myg86NhhyobVeGW6efGJAUmIXs2x6DKg1+4lmC6mqQF39RbywkcZHCoLeY\n+9A48+h41RftKO9sZDvRNgwahyCS3Btoz8MoqfQtcheWwHSk8113sGYAex40d4Un\nDp2Q2xro/QKBgALgnckPvJfPK4FCOdPo3O/tRx3vvEJwFXJfH33yukFUxUCLbkDy\nHCK/aFa1S9Zx2sKHzbQdlNUYDTpyrXcaFWW1Mu5q8/Yx3hFhNahbYRR2Tc1h44Zj\nuWRkIB0srLuIw32AKCdEVTXIJ9zY70Jy1Bft0OTYAK6RMVBW7WMzzlUPAoGAHlhn\nWaPuqrg5f/odwzIzehLHa2kBjsgszA0iUdMEQIyA/nTnrEfIpQRoitWM2w37smAb\nQ1L6lGV1bmDL9VsOsrc/lm3rypi/SNEqXlbWL/9nIzWwLDdKbcjtD/jh+UtqKn97\nUlA4gRNvGfBq1U6Ph7uZxympTp87Yhvk37bZafUCgYEAy5AYTW0kKeaZ96cg5jY2\nyoIFcoOr6Y54hc2Xda6Zlp3eiqweGhvMg+U+6YeEV+OwvrmJwWjCN7q8m0gmFBOz\nnQlol04vUenQ8Q1QnJsfhTBUaSdxG2eI/WmXIRz7khWGiOHJBqBQgNXvll9LmXw8\nRrvIxEOqBeb2CEwRyjax3YA=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@betoappteste.iam.gserviceaccount.com",
+  "client_id": "100952874601220976243",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40betoappteste.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
