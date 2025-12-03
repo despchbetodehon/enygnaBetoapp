@@ -7,9 +7,10 @@ import { useRouter } from 'next/router';
 interface AutenticacaoContextProps {
   carregando: boolean;
   usuario: Usuario | null;
-  loginEmailSenha: (email: string, senha: string) => Promise<void>;
+  loginEmailSenha: (email: string, senha: string, lembrarSenha?: boolean, manterConectado?: boolean) => Promise<any>;
   logout: () => Promise<void>;
-  cadastrar: (email: string, senha: string, nome: string) => Promise<void>;
+  atualizarUsuario: (novoUsuario: Usuario) => Promise<void>;
+  estaAutenticado: () => boolean;
 }
 
 const AutenticacaoContext = createContext<AutenticacaoContextProps>({} as any);
