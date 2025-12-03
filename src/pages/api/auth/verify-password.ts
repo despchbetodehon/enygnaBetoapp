@@ -139,17 +139,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   } catch (error: any) {
     console.error('Erro na verificação:', error);
-    return res.status(500).json({ 
-      success: false,
-      error: 'Erro ao processar autenticação',
-      message: error?.message || 'Erro desconhecido'
-    });
-  } finally {
-    // Garantir que sempre há resposta
+    
+    // Garantir que sempre retorna JSON
     if (!res.headersSent) {
-      res.status(500).json({ 
+      return res.status(500).json({ 
         success: false,
-        error: 'Erro interno do servidor' 
+        error: 'Erro ao processar autenticação',
+        message: error?.message || 'Erro desconhecido'
       });
     }
   }
