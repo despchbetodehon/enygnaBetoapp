@@ -27,27 +27,45 @@ async function hashPasswordSecure(password: string, salt?: string): Promise<{ ha
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    // Garantir Content-Type JSON
+    // Log inicial
+    console.log('🔐 API verify-password chamada');
+    console.log('Método:', req.method);
+
+    // Configurar CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Content-Type', 'application/json');
 
+    if (req.method === 'OPTIONS') {
+      return res.status(200).json({ success: true });
+    }
+
     if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Método não permitido' });
+      console.log('❌ Método não permitido:', req.method);
+      return res.status(405).json({ 
+        success: false,
+        error: 'Método não permitido' 
+      });
     }
 
     const { email, password } = req.body;
 
     if (!email || !password) {
       console.log('❌ Email ou senha não fornecidos');
-      return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+      return res.status(400).json({ 
+        success: false,
+        error: 'Email e senha são obrigatórios' 
+      });
     }
 
     console.log('🔐 Iniciando verificação de senha para:', email);
 
     const db = admin.firestore();
-    
+
     // Aguardar um pouco para garantir que o usuário foi criado (se for novo)
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     // Buscar pelo email exato como foi digitado
     const userDoc = await db.collection('usuarios').doc(email).get();
 
@@ -57,7 +75,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log('❌ Usuário não encontrado:', email);
       // Delay para prevenir enumeração de usuários
       await new Promise(resolve => setTimeout(resolve, 1000));
-      return res.status(401).json({ error: 'Usuário não cadastrado. Por favor, entre em contato com o administrador.' });
+      return res.status(401).json({ 
+        success: false,
+        error: 'Usuário não cadastrado. Por favor, entre em contato com o administrador.' 
+      });
     }
 
     const userData = userDoc.data()!;
@@ -66,13 +87,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Verificar se o usuário está ativo
     if (userData.ativo === false) {
       console.log('❌ Usuário desativado:', email);
-      return res.status(403).json({ error: 'Usuário desativado' });
+      return res.status(403).json({ 
+        success: false,
+        error: 'Usuário desativado' 
+      });
     }
 
     // Verificar se tem salt - se não tiver, usuário não foi migrado corretamente
     if (!userData.salt) {
       console.log('⚠️ Usuário sem salt - necessita remigração:', email);
-      return res.status(401).json({ error: 'Conta necessita atualização. Entre em contato com o suporte.' });
+      return res.status(401).json({ 
+        success: false,
+        error: 'Conta necessita atualização. Entre em contato com o suporte.' 
+      });
     }
 
     // Verificar senha com salt
@@ -84,7 +111,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log('❌ Senha incorreta para:', email);
       // Delay para prevenir força bruta
       await new Promise(resolve => setTimeout(resolve, 1000));
-      return res.status(401).json({ error: 'Credenciais inválidas' });
+      return res.status(401).json({ 
+        success: false,
+        error: 'Credenciais inválidas' 
+      });
     }
 
     console.log('✅ Senha correta para:', email);
@@ -138,7 +168,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   } catch (error: any) {
     console.error('Erro na verificação:', error);
-    
+
     // Garantir que sempre retorna JSON
     if (!res.headersSent) {
       return res.status(500).json({ 
